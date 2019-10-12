@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:panther_app/app_state.dart';
 import 'package:panther_app/views/HomeView.dart';
 
-void main() => runApp(MyApp());
+void main() => runApp(AppState(child: MyApp(),));
 
 class MyApp extends StatelessWidget {
   @override
