@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:panther_app/components/task_card.dart';
 
 class HomeView extends StatelessWidget {
   @override
@@ -9,6 +10,9 @@ class HomeView extends StatelessWidget {
         title: Text('Today'),
         backgroundColor: Theme.of(context).canvasColor,
         elevation: 0.0,
+        actions: <Widget>[
+          Padding(padding: const EdgeInsets.fromLTRB(0.0, 0.0, 12.0, 0.0), child: CircleAvatar(child: Text('A'),),)
+        ],
       ),
       drawer: Drawer(
         child: Container(
@@ -52,9 +56,36 @@ class HomeView extends StatelessWidget {
           ),
         ),
       ),
-      body: Center(
-        child: Text('Hello, World!'),
-      ),
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 0.0),
+              child: Text(
+                'Today\'s tasks',
+                style: TextStyle(
+                  color: Theme.of(context).primaryTextTheme.caption.color,
+                  fontWeight: FontWeight.bold
+                ),
+              ),
+            ),
+            // Listing all today's tasks
+          Container(
+          margin: EdgeInsets.symmetric(vertical: 15.0),
+          height: 200.0,
+          child: ListView(
+            scrollDirection: Axis.horizontal,
+            children: <Widget>[
+              TaskCard(),
+              TaskCard()
+            ],
+          ),
+        ),
+          ],
+        ),
+      )
     );
   }
 }
