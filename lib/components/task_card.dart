@@ -1,6 +1,18 @@
 import 'package:flutter/material.dart';
 
-class TaskCard extends StatelessWidget {
+class TaskCard extends StatefulWidget {
+  String projectName;
+  String taskTitle;
+  String taskDescription;
+
+  TaskCard({this.projectName, this.taskTitle, this.taskDescription});
+
+  @override
+  _TaskCardState createState() => _TaskCardState();
+}
+
+class _TaskCardState extends State<TaskCard> {
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -12,11 +24,11 @@ class TaskCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               SizedBox(height: 10.0),
-              Text('Rubium Studio', style: TextStyle(color: Theme.of(context).primaryTextTheme.caption.color)),
+              Text(widget.projectName, style: TextStyle(color: Theme.of(context).primaryTextTheme.caption.color)),
               SizedBox(height: 10.0),
-              Text('Build the landing page', style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold), ),
+              Text(widget.taskTitle, style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold), ),
               SizedBox(height: 10.0),
-              Text('I was trying to achieve an effect of allowing a widget to overflow to another widget', style: TextStyle(fontSize: 12.0, color: Theme.of(context).primaryTextTheme.caption.color)),
+              Text(widget.taskDescription, style: TextStyle(fontSize: 12.0, color: Theme.of(context).primaryTextTheme.caption.color)),
               // Text('A card is a sheet of Material used to represent some related information, for example an album.', style: TextStyle(fontSize: 12.0, height: 1.5, color: Theme.of(context).primaryTextTheme.caption.color)),
               Container(
                 padding:
@@ -31,18 +43,18 @@ class TaskCard extends StatelessWidget {
                       fit: StackFit.expand,
                       children: <Widget>[
                         Positioned(
-                          child: CircleAvatar(child: Text('A')),
+                          child: CircleAvatar(child: Text('A', style: TextStyle(color: Theme.of(context).canvasColor),),  backgroundColor: Colors.greenAccent[200]),
                           left: 0.0,
                         ),
                         Positioned(
                           child: CircleAvatar(
-                              child: Text('K'),
+                              child: Text('K', style: TextStyle(color: Theme.of(context).canvasColor),),
                               backgroundColor: Colors.blueAccent[200]),
                           left: 30.0,
                         ),
                         Positioned(
                           child: CircleAvatar(
-                            child: Text('H'),
+                            child: Text('H', style: TextStyle(color: Theme.of(context).canvasColor),),
                             backgroundColor: Colors.redAccent[200],
                           ),
                           left: 60.0,
