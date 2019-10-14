@@ -91,6 +91,7 @@ class _TaskCardState extends State<TaskCard> {
                         Positioned(
                           left: 200.0,
                           child: IconButton(
+                            onPressed: () {},
                             icon: Icon(Icons.check_circle_outline),
                           ),
                         ),
