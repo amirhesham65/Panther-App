@@ -53,6 +53,7 @@ class _TaskCardState extends State<TaskCard> {
                       fit: StackFit.expand,
                       children: <Widget>[
                         Positioned(
+                          left: 0.0,
                           child: CircleAvatar(
                             child: Text(
                               'A',
@@ -62,9 +63,9 @@ class _TaskCardState extends State<TaskCard> {
                             ),
                             backgroundColor: Colors.greenAccent[200],
                           ),
-                          left: 0.0,
                         ),
                         Positioned(
+                          left: 30.0,
                           child: CircleAvatar(
                             child: Text(
                               'K',
@@ -74,9 +75,9 @@ class _TaskCardState extends State<TaskCard> {
                             ),
                             backgroundColor: Colors.blueAccent[200],
                           ),
-                          left: 30.0,
                         ),
                         Positioned(
+                          left: 60.0,
                           child: CircleAvatar(
                             child: Text(
                               'H',
@@ -86,7 +87,12 @@ class _TaskCardState extends State<TaskCard> {
                             ),
                             backgroundColor: Colors.redAccent[200],
                           ),
-                          left: 60.0,
+                        ),
+                        Positioned(
+                          left: 200.0,
+                          child: IconButton(
+                            icon: Icon(Icons.check_circle_outline),
+                          ),
                         ),
                       ],
                     ),
