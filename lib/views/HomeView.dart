@@ -10,7 +10,7 @@ class HomeView extends StatelessWidget {
         appBar: AppBar(
           title: Text('Today'),
           backgroundColor: Theme.of(context).canvasColor,
-          elevation: 0.0,
+          elevation: 0.0Q,
           actions: <Widget>[
             Padding(
               padding: const EdgeInsets.fromLTRB(0.0, 0.0, 12.0, 0.0),
@@ -27,8 +27,7 @@ class HomeView extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 10.0, vertical: 0.0),
+                padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 8.0),
                 child: Text(
                   'Today\'s tasks',
                   style: TextStyle(
@@ -38,8 +37,7 @@ class HomeView extends StatelessWidget {
                 ),
               ),
               // Listing all today's tasks
-              Container(
-                margin: EdgeInsets.symmetric(vertical: 10.0),
+              Container(                
                 height: 200.0,
                 child: ListView(
                   scrollDirection: Axis.horizontal,

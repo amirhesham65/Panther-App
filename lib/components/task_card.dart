@@ -41,7 +41,7 @@ class _TaskCardState extends State<TaskCard> {
                     fontSize: 12.0,
                     color: Theme.of(context).primaryTextTheme.caption.color),
               ),
-              // Text('A card is a sheet of Material used to represent some related information, for example an album.', style: TextStyle(fontSize: 12.0, height: 1.5, color: Theme.of(context).primaryTextTheme.caption.color)),
+              
               Container(
                 padding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 0.0),
                 child: Transform.scale(

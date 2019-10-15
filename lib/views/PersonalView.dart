@@ -30,7 +30,7 @@ class PersonalView extends StatelessWidget {
           children: <Widget>[
             Expanded(
               child: ListView(
-                children: <Widget>[Task(title: 'A text field lets the user enter text, either with a hardware.',), Task(title: 'Define the routes by providing additional properties to the MaterialApp.'), Task(title: 'With the widgets and routes in place, trigger navigation by using.',)],
+                children: <Widget>[Task(title: 'A text field lets the user enter text, either with a hardware.',), SizedBox(height: 5.0,), Task(title: 'Define the routes by providing additional properties to the MaterialApp.'), SizedBox(height: 5.0,), Task(title: 'With the widgets and routes in place, trigger navigation by using.',)],
               ),
             )
           ],
