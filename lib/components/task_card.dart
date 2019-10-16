@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class TaskCard extends StatefulWidget {
-  // Accepting data
+  // Accepting task data
   final String projectName;
   final String taskTitle;
   final String taskDescription;

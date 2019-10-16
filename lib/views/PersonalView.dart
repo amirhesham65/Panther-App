@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+// The personal tasks view
 class PersonalView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -40,9 +41,12 @@ class PersonalView extends StatelessWidget {
   }
 }
 
+// The Task widget
 class Task extends StatelessWidget {
-  Task({this.title});
+  // Accepting data as arguments 
   final String title;
+
+  Task({this.title});
 
   @override
   Widget build(BuildContext context) {

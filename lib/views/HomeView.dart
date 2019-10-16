@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:panther_app/components/drawer.dart';
 import 'package:panther_app/components/task_card.dart';
 
+// The home (Today) view widget
 class HomeView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -10,7 +11,7 @@ class HomeView extends StatelessWidget {
         appBar: AppBar(
           title: Text('Today'),
           backgroundColor: Theme.of(context).canvasColor,
-          elevation: 0.0Q,
+          elevation: 0.0,
           actions: <Widget>[
             Padding(
               padding: const EdgeInsets.fromLTRB(0.0, 0.0, 12.0, 0.0),

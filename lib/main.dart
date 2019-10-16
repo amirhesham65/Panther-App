@@ -5,17 +5,21 @@ import 'package:panther_app/views/PersonalView.dart';
 
 void main() => runApp(AppState(child: MyApp(),));
 
+// The main app root widget
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      // Remove the debugModeBanner
       debugShowCheckedModeBanner: false,
+      // Theme controlling
       theme: ThemeData(
         brightness: Brightness.light,
         primarySwatch: Colors.orange,  
         accentColor: Colors.orange      
       ),
       home: HomeView(),
+      // Defining app routes
       routes: {
         '/today': (context) => HomeView(),
         '/personal': (context) => PersonalView()
