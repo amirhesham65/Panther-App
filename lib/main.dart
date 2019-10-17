@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:panther_app/app_state.dart';
 import 'package:panther_app/views/HomeView.dart';
 import 'package:panther_app/views/PersonalView.dart';
+import 'package:panther_app/views/ProjectsView.dart';
 
 void main() => runApp(AppState(child: MyApp(),));
 
@@ -22,7 +23,8 @@ class MyApp extends StatelessWidget {
       // Defining app routes
       routes: {
         '/today': (context) => HomeView(),
-        '/personal': (context) => PersonalView()
+        '/personal': (context) => PersonalView(),
+        '/projects': (context) => ProjectsView()
       },
     );
   }

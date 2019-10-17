@@ -23,14 +23,12 @@ class AppDrawer extends StatelessWidget {
             ListTile(
               title: Text('Projects'),
               trailing: Icon(Icons.view_carousel),
+              onTap: () => Navigator.pushNamed(context, '/projects')
             ),
             ListTile(
               title: Text('Personal'),
               trailing: Icon(Icons.person),
-              onTap: () {
-                Navigator.pushNamed(context, '/personal');
-                print('sasa');
-              },
+              onTap: () => Navigator.pushNamed(context, '/personal')
             ),
             Divider(),
             ListTile(
