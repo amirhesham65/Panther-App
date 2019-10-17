@@ -43,24 +43,16 @@ class _HomeViewState extends State<HomeView> {
               Padding(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 10.0, vertical: 8.0),
-                child: Center(
-                  child: CupertinoSegmentedControl(
-                    unselectedColor: Theme.of(context).canvasColor,
-                    pressedColor: Theme.of(context).accentColor,
-                    groupValue: _currentSegment,
-                    onValueChanged: (value) {
-                      setState(() {
-                        _currentSegment = value;
-                      });
-                    },
-                    children: <int, Widget>{
-                      0: Padding(padding: EdgeInsets.symmetric(vertical: 5.0, horizontal: 20.0), child: Text("Recent"),),
-                      1: Padding(padding: EdgeInsets.symmetric(vertical: 5.0, horizontal: 20.0), child: Text("Projects"),),
-                      2: Padding(padding: EdgeInsets.symmetric(vertical: 5.0, horizontal: 20.0), child: Text("Personal"),),
-                    },
-                  ),
-                ),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: <Widget>[
+                    Text('Today', style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),),
+                    SizedBox(width: 7.0,),
+                    Text('Thu Sep 12', style: TextStyle(fontSize: 12.0, fontWeight: FontWeight.w100, color: Colors.grey),),
+                  ],
+                )
               ),
+              SizedBox(height: 8.0,),
               // Listing all today's tasks
               Expanded(
                 child: ListView(
