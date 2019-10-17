@@ -8,10 +8,16 @@ class HomeView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {},
+          child: Icon(
+            Icons.add,
+            color: Colors.white,
+          ),
+        ),
         appBar: AppBar(
           title: Text('Today'),
           backgroundColor: Theme.of(context).canvasColor,
-          elevation: 0.0,
           actions: <Widget>[
             Padding(
               padding: const EdgeInsets.fromLTRB(0.0, 0.0, 12.0, 0.0),
@@ -30,19 +36,24 @@ class HomeView extends StatelessWidget {
               Padding(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 10.0, vertical: 8.0),
-                child: Text(
-                  'Today\'s tasks',
-                  style: TextStyle(
-                    color: Theme.of(context).primaryTextTheme.caption.color,
-                    fontWeight: FontWeight.bold,
+                child: Center(
+                  child: CupertinoSegmentedControl(
+                    unselectedColor: Colors.orange[300],
+                    pressedColor: Colors.orange,
+                    selectedColor: Colors.white,
+                    onValueChanged: (value) {},
+                    children: <Key, Widget>{
+                      UniqueKey(): Padding(padding: EdgeInsets.symmetric(vertical: 5.0, horizontal: 25.0), child: Text("Recent"),),
+                      UniqueKey(): Padding(padding: EdgeInsets.all(3.0), child: Text("Priority"),),
+                      UniqueKey(): Padding(padding: EdgeInsets.all(3.0), child: Text("Projects"),),
+                    },
                   ),
                 ),
               ),
               // Listing all today's tasks
-              Container(
-                height: 200.0,
+              Expanded(
                 child: ListView(
-                  scrollDirection: Axis.horizontal,
+                  scrollDirection: Axis.vertical,
                   children: <Widget>[
                     TaskCard(
                       projectName: 'Rubium Studio',
@@ -59,55 +70,6 @@ class HomeView extends StatelessWidget {
                   ],
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                    horizontal: 10.0, vertical: 10.0),
-                child: Text(
-                  'Recent projects',
-                  style: TextStyle(
-                      color: Theme.of(context).primaryTextTheme.caption.color,
-                      fontWeight: FontWeight.bold),
-                ),
-              ),
-              Expanded(
-                child: ListView(
-                  children: <Widget>[
-                    ListTile(
-                      leading: CircleAvatar(
-                        child: Text('Q'),
-                      ),
-                      title: Text('Quak'),
-                      subtitle: Text('12 Sep | 3 Members'),
-                      trailing: IconButton(
-                        onPressed: () {},
-                        icon: Icon(Icons.more_vert),
-                      ),
-                    ),
-                    ListTile(
-                      leading: CircleAvatar(
-                        child: Text('R'),
-                      ),
-                      title: Text('Rubium Studio'),
-                      subtitle: Text('15 Sep | 2 Members'),
-                      trailing: IconButton(
-                        onPressed: () {},
-                        icon: Icon(Icons.more_vert),
-                      ),
-                    ),
-                    ListTile(
-                      leading: CircleAvatar(
-                        child: Text('P'),
-                      ),
-                      title: Text('Panther App'),
-                      subtitle: Text('29 Nov | 1 Members'),
-                      trailing: IconButton(
-                        onPressed: () {},
-                        icon: Icon(Icons.more_vert),
-                      ),
-                    ),
-                  ],
-                ),
-              )
             ],
           ),
         ));
