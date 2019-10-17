@@ -28,7 +28,8 @@ class HomeView extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 8.0),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 10.0, vertical: 8.0),
                 child: Text(
                   'Today\'s tasks',
                   style: TextStyle(
@@ -38,7 +39,7 @@ class HomeView extends StatelessWidget {
                 ),
               ),
               // Listing all today's tasks
-              Container(                
+              Container(
                 height: 200.0,
                 child: ListView(
                   scrollDirection: Axis.horizontal,
@@ -77,7 +78,10 @@ class HomeView extends StatelessWidget {
                       ),
                       title: Text('Quak'),
                       subtitle: Text('12 Sep | 3 Members'),
-                      trailing: Icon(Icons.more_vert),
+                      trailing: IconButton(
+                        onPressed: () {},
+                        icon: Icon(Icons.more_vert),
+                      ),
                     ),
                     ListTile(
                       leading: CircleAvatar(
@@ -85,7 +89,10 @@ class HomeView extends StatelessWidget {
                       ),
                       title: Text('Rubium Studio'),
                       subtitle: Text('15 Sep | 2 Members'),
-                      trailing: Icon(Icons.more_vert),
+                      trailing: IconButton(
+                        onPressed: () {},
+                        icon: Icon(Icons.more_vert),
+                      ),
                     ),
                     ListTile(
                       leading: CircleAvatar(
@@ -93,7 +100,10 @@ class HomeView extends StatelessWidget {
                       ),
                       title: Text('Panther App'),
                       subtitle: Text('29 Nov | 1 Members'),
-                      trailing: Icon(Icons.more_vert),
+                      trailing: IconButton(
+                        onPressed: () {},
+                        icon: Icon(Icons.more_vert),
+                      ),
                     ),
                   ],
                 ),
