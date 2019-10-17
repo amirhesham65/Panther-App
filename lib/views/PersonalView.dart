@@ -50,20 +50,24 @@ class Task extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      leading: IconButton(
-        onPressed: () {},
-        icon: Icon(Icons.check_circle_outline),
-      ),
-      contentPadding: const EdgeInsets.all(0.0),
-      title: Text(title),
-      subtitle: Padding(
-        padding: const EdgeInsets.fromLTRB(0.0, 5.0, 0.0, 0.0),
-        child: Text(
-          'Sep 6',
-          style: TextStyle(
-            color: Colors.red,
-            fontWeight: FontWeight.w100,
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 10.0),
+      decoration: BoxDecoration(border: Border(top: BorderSide(color: Colors.white10)) ),
+      child: ListTile(
+        leading: IconButton(
+          onPressed: () {},
+          icon: Icon(Icons.check_circle_outline, color: Colors.grey,),
+        ),
+        contentPadding: const EdgeInsets.all(0.0),
+        title: Text(title),
+        subtitle: Padding(
+          padding: const EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 0.0),
+          child: Text(
+            'Sep 6',
+            style: TextStyle(
+              color: Colors.red,
+              fontWeight: FontWeight.w100,
+            ),
           ),
         ),
       ),

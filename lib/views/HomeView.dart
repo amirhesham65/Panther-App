@@ -23,6 +23,7 @@ class _HomeViewState extends State<HomeView> {
         ),
         appBar: AppBar(
           title: Text('Today'),
+          elevation: 0.0,
           backgroundColor: Theme.of(context).canvasColor,
           actions: <Widget>[
             Padding(
