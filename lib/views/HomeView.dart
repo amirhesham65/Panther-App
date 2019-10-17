@@ -4,7 +4,13 @@ import 'package:panther_app/components/drawer.dart';
 import 'package:panther_app/components/task_card.dart';
 
 // The home (Today) view widget
-class HomeView extends StatelessWidget {
+class HomeView extends StatefulWidget {
+  @override
+  _HomeViewState createState() => _HomeViewState();
+}
+
+class _HomeViewState extends State<HomeView> {
+  int _currentSegment = 0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,14 +44,18 @@ class HomeView extends StatelessWidget {
                     const EdgeInsets.symmetric(horizontal: 10.0, vertical: 8.0),
                 child: Center(
                   child: CupertinoSegmentedControl(
-                    unselectedColor: Colors.orange[300],
-                    pressedColor: Colors.orange,
-                    selectedColor: Colors.white,
-                    onValueChanged: (value) {},
-                    children: <Key, Widget>{
-                      UniqueKey(): Padding(padding: EdgeInsets.symmetric(vertical: 5.0, horizontal: 25.0), child: Text("Recent"),),
-                      UniqueKey(): Padding(padding: EdgeInsets.all(3.0), child: Text("Priority"),),
-                      UniqueKey(): Padding(padding: EdgeInsets.all(3.0), child: Text("Projects"),),
+                    unselectedColor: Theme.of(context).canvasColor,
+                    pressedColor: Theme.of(context).accentColor,
+                    groupValue: _currentSegment,
+                    onValueChanged: (value) {
+                      setState(() {
+                        _currentSegment = value;
+                      });
+                    },
+                    children: <int, Widget>{
+                      0: Padding(padding: EdgeInsets.symmetric(vertical: 5.0, horizontal: 20.0), child: Text("Recent"),),
+                      1: Padding(padding: EdgeInsets.symmetric(vertical: 5.0, horizontal: 20.0), child: Text("Projects"),),
+                      2: Padding(padding: EdgeInsets.symmetric(vertical: 5.0, horizontal: 20.0), child: Text("Personal"),),
                     },
                   ),
                 ),
