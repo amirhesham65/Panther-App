@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:percent_indicator/percent_indicator.dart';
 
 class TaskCard extends StatefulWidget {
   // Accepting task data
@@ -41,63 +42,23 @@ class _TaskCardState extends State<TaskCard> {
                     fontSize: 12.0,
                     color: Theme.of(context).primaryTextTheme.caption.color),
               ),
-              
-              Container(
-                padding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 0.0),
-                child: Transform.scale(
-                  scale: 1,
-                  child: Container(
-                    width: 350.0,
-                    height: 40.0,
-                    child: Stack(
-                      fit: StackFit.expand,
-                      children: <Widget>[
-                        Positioned(
-                          left: 0.0,
-                          child: CircleAvatar(
-                            child: Text(
-                              'A',
-                              style: TextStyle(
-                                color: Theme.of(context).canvasColor,
-                              ),
-                            ),
-                            backgroundColor: Colors.greenAccent[200],
-                          ),
-                        ),
-                        Positioned(
-                          left: 30.0,
-                          child: CircleAvatar(
-                            child: Text(
-                              'K',
-                              style: TextStyle(
-                                color: Theme.of(context).canvasColor,
-                              ),
-                            ),
-                            backgroundColor: Colors.blueAccent[200],
-                          ),
-                        ),
-                        Positioned(
-                          left: 60.0,
-                          child: CircleAvatar(
-                            child: Text(
-                              'H',
-                              style: TextStyle(
-                                color: Theme.of(context).canvasColor,
-                              ),
-                            ),
-                            backgroundColor: Colors.redAccent[200],
-                          ),
-                        ),
-                        Positioned(
-                          left: 200.0,
-                          child: IconButton(
-                            onPressed: () {},
-                            icon: Icon(Icons.check_circle_outline),
-                          ),
-                        ),
-                      ],
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 10.0),
+                child: Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: LinearPercentIndicator(
+                        percent: 0.25,
+                        progressColor: Theme.of(context).accentColor,
+                        backgroundColor: Colors.grey,
+                      ),
                     ),
-                  ),
+                    IconButton(
+                      onPressed: () {},
+                      icon: Icon(Icons.check_circle_outline),
+                      color: Colors.grey,
+                    ),
+                  ],
                 ),
               )
             ],
