@@ -42,9 +42,7 @@ class _TaskCardState extends State<TaskCard> {
                     fontSize: 12.0,
                     color: Theme.of(context).primaryTextTheme.caption.color),
               ),
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 10.0),
-                child: Row(
+              Row(
                   children: <Widget>[
                     Expanded(
                       child: LinearPercentIndicator(
@@ -60,7 +58,6 @@ class _TaskCardState extends State<TaskCard> {
                     ),
                   ],
                 ),
-              )
             ],
           ),
         ),
