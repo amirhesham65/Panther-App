@@ -18,10 +18,12 @@ class AppDrawer extends StatelessWidget {
             ),
             ListTile(
               title: Text('Today'),
+              subtitle: Text('3 tasks due'),
               trailing: Icon(Icons.today),
             ),
             ListTile(
               title: Text('Workspaces'),
+              subtitle: Text('12 notifications'),
               trailing: Icon(Icons.view_carousel),
               onTap: () => Navigator.pushNamed(context, '/projects')
             ),
