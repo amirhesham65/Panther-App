@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
       home: HomeView(),
       // Defining app routes
       routes: {
-        '/today': (context) => HomeView(),
+        '/home': (context) => HomeView(),
         '/personal': (context) => PersonalView(),
         '/projects': (context) => ProjectsView()
       },
