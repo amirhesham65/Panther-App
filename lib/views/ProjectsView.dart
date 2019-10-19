@@ -13,7 +13,7 @@ class ProjectsView extends StatelessWidget {
         ),
       ),
       appBar: AppBar(
-        title: Text('Projects'),
+        title: Text('Workspaces'),
         backgroundColor: Theme.of(context).canvasColor,
         elevation: 0.0,
         actions: <Widget>[
@@ -37,10 +37,10 @@ class ProjectsView extends StatelessWidget {
                         child: Text('Q'),
                       ),
                       title: Text('Quak'),
-                      subtitle: Text('12 Sep | 3 Members'),
+                      subtitle: Text('8 updates'),
                       trailing: IconButton(
                         onPressed: () {},
-                        icon: Icon(Icons.more_vert),
+                        icon: Icon(Icons.reorder),
                       ),
                     ),
                     ListTile(
@@ -48,10 +48,10 @@ class ProjectsView extends StatelessWidget {
                         child: Text('R'),
                       ),
                       title: Text('Rubium Studio'),
-                      subtitle: Text('15 Sep | 2 Members'),
+                      subtitle: Text('2 updates'),
                       trailing: IconButton(
                         onPressed: () {},
-                        icon: Icon(Icons.more_vert),
+                        icon: Icon(Icons.reorder),
                       ),
                     ),
                     ListTile(
@@ -59,10 +59,10 @@ class ProjectsView extends StatelessWidget {
                         child: Text('P'),
                       ),
                       title: Text('Panther App'),
-                      subtitle: Text('29 Nov | 1 Members'),
+                      subtitle: Text('2 updates'),
                       trailing: IconButton(
                         onPressed: () {},
-                        icon: Icon(Icons.more_vert),
+                        icon: Icon(Icons.reorder),
                       ),
                     ),
                 ],
