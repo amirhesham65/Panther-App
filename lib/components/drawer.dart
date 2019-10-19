@@ -21,7 +21,7 @@ class AppDrawer extends StatelessWidget {
               trailing: Icon(Icons.today),
             ),
             ListTile(
-              title: Text('Projects'),
+              title: Text('Workspaces'),
               trailing: Icon(Icons.view_carousel),
               onTap: () => Navigator.pushNamed(context, '/projects')
             ),
