@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:panther_app/components/SegmentsOfControl.dart';
 import 'package:panther_app/components/task_card.dart';
+import 'package:percent_indicator/linear_percent_indicator.dart';
 
 class SingleWorkspaceView extends StatelessWidget {
   @override
@@ -46,36 +47,70 @@ class SingleWorkspaceView extends StatelessWidget {
               Expanded(
                 child: ListView(
                   children: <Widget>[
-                    TaskCard(
-                      projectName: 'Rubium Studio',
-                      taskTitle: 'Build the landing page',
-                      taskDescription:
-                          'Maybe you’ve got an idea in mind already a book you’d really love to write.',
-                    ),
-                    TaskCard(
-                      projectName: 'Rubium Studio',
-                      taskTitle: 'Build the landing page',
-                      taskDescription:
-                          'Maybe you’ve got an idea in mind already a book you’d really love to write.',
-                    ),
-                    TaskCard(
-                      projectName: 'Rubium Studio',
-                      taskTitle: 'Build the landing page',
-                      taskDescription:
-                          'Maybe you’ve got an idea in mind already a book you’d really love to write.',
-                    ),
-                    TaskCard(
-                      projectName: 'Rubium Studio',
-                      taskTitle: 'Build the landing page',
-                      taskDescription:
-                          'Maybe you’ve got an idea in mind already a book you’d really love to write.',
-                    ),
-                    TaskCard(
-                      projectName: 'Rubium Studio',
-                      taskTitle: 'Build the landing page',
-                      taskDescription:
-                          'Maybe you’ve got an idea in mind already a book you’d really love to write.',
-                    ),
+                    Container(
+                      width: 300.0,
+                      child: Container(
+                        child: Card(
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 20.0,
+                              vertical: 10.0,
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                SizedBox(height: 10.0),
+                                Text(
+                                  'Today',
+                                  style: TextStyle(
+                                    fontSize: 12.0,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.blue,
+                                  ),
+                                ),
+                                SizedBox(height: 10.0),
+                                Text(
+                                  'Wireframe the app layout',
+                                  style: TextStyle(
+                                    fontSize: 20.0,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                SizedBox(height: 10.0),
+                                Text(
+                                  'Start the UX design process by wireframing the whole app layout with flow.',
+                                  style: TextStyle(
+                                    fontSize: 12.0,
+                                    color: Theme.of(context)
+                                        .primaryTextTheme
+                                        .caption
+                                        .color,
+                                  ),
+                                ),
+                                Row(
+                                  children: <Widget>[
+                                    Icon(Icons.flag, color: Colors.grey),
+                                    Expanded(
+                                      child: LinearPercentIndicator(
+                                        percent: 0.25,
+                                        progressColor:
+                                            Theme.of(context).accentColor,
+                                        backgroundColor: Colors.grey,
+                                      ),
+                                    ),
+                                    IconButton(
+                                      onPressed: () {},
+                                      icon: Icon(Icons.check_circle_outline),
+                                      color: Colors.grey,
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    )
                   ],
                 ),
               )
