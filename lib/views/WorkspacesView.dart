@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 // The listing projects view
-class ProjectsView extends StatelessWidget {
+class WorkspacesView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
