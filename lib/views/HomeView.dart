@@ -34,45 +34,60 @@ class _HomeViewState extends State<HomeView> {
           ],
         ),
         drawer: AppDrawer(),
-        body: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 10.0, vertical: 8.0),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: <Widget>[
-                    Text('Today', style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),),
-                    SizedBox(width: 7.0,),
-                    Text('Thu Sep 12', style: TextStyle(fontSize: 12.0, fontWeight: FontWeight.w100, color: Colors.grey),),
-                  ],
-                )
-              ),
-              SizedBox(height: 8.0,),
-              // Listing all today's tasks
-              Expanded(
-                child: ListView(
-                  scrollDirection: Axis.vertical,
-                  children: <Widget>[
-                    TaskCard(
-                      projectName: 'Rubium Studio',
-                      taskTitle: 'Build the landing page',
-                      taskDescription:
-                          'Maybe you’ve got an idea in mind already a book you’d really love to write.',
-                    ),
-                    TaskCard(
-                      projectName: 'Quak',
-                      taskTitle: 'Rebuild the MVP',
-                      taskDescription:
-                          'Ask your audience what they want, and give them a few possibilities to choose from.',
-                    )
-                  ],
+        body: SafeArea(
+          child: Container(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 10.0, vertical: 8.0),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: <Widget>[
+                        Text(
+                          'Today',
+                          style: TextStyle(
+                              fontSize: 18.0, fontWeight: FontWeight.bold),
+                        ),
+                        SizedBox(
+                          width: 7.0,
+                        ),
+                        Text(
+                          'Thu Sep 12',
+                          style: TextStyle(
+                              fontSize: 12.0,
+                              fontWeight: FontWeight.w100,
+                              color: Colors.grey),
+                        ),
+                      ],
+                    )),
+                SizedBox(
+                  height: 8.0,
                 ),
-              ),
-            ],
+                // Listing all today's tasks
+                Expanded(
+                  child: ListView(
+                    scrollDirection: Axis.vertical,
+                    children: <Widget>[
+                      TaskCard(
+                        projectName: 'Rubium Studio',
+                        taskTitle: 'Build the landing page',
+                        taskDescription:
+                            'Maybe you’ve got an idea in mind already a book you’d really love to write.',
+                      ),
+                      TaskCard(
+                        projectName: 'Quak',
+                        taskTitle: 'Rebuild the MVP',
+                        taskDescription:
+                            'Ask your audience what they want, and give them a few possibilities to choose from.',
+                      )
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
         ));
   }

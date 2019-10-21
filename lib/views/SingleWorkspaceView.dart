@@ -32,53 +32,55 @@ class SingleWorkspaceView extends StatelessWidget {
           )
         ],
       ),
-      body: Container(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          children: <Widget>[
-            Center(
-              child: SOC(),
-            ),
-            SizedBox(
-              height: 12.0,
-            ),
-            Expanded(
-              child: ListView(
-                children: <Widget>[
-                  TaskCard(
-                    projectName: 'Rubium Studio',
-                    taskTitle: 'Build the landing page',
-                    taskDescription:
-                        'Maybe you’ve got an idea in mind already a book you’d really love to write.',
-                  ),
-                  TaskCard(
-                    projectName: 'Rubium Studio',
-                    taskTitle: 'Build the landing page',
-                    taskDescription:
-                        'Maybe you’ve got an idea in mind already a book you’d really love to write.',
-                  ),
-                  TaskCard(
-                    projectName: 'Rubium Studio',
-                    taskTitle: 'Build the landing page',
-                    taskDescription:
-                        'Maybe you’ve got an idea in mind already a book you’d really love to write.',
-                  ),
-                  TaskCard(
-                    projectName: 'Rubium Studio',
-                    taskTitle: 'Build the landing page',
-                    taskDescription:
-                        'Maybe you’ve got an idea in mind already a book you’d really love to write.',
-                  ),
-                  TaskCard(
-                    projectName: 'Rubium Studio',
-                    taskTitle: 'Build the landing page',
-                    taskDescription:
-                        'Maybe you’ve got an idea in mind already a book you’d really love to write.',
-                  ),
-                ],
+      body: SafeArea(
+        child: Container(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            children: <Widget>[
+              Center(
+                child: SOC(),
               ),
-            )
-          ],
+              SizedBox(
+                height: 12.0,
+              ),
+              Expanded(
+                child: ListView(
+                  children: <Widget>[
+                    TaskCard(
+                      projectName: 'Rubium Studio',
+                      taskTitle: 'Build the landing page',
+                      taskDescription:
+                          'Maybe you’ve got an idea in mind already a book you’d really love to write.',
+                    ),
+                    TaskCard(
+                      projectName: 'Rubium Studio',
+                      taskTitle: 'Build the landing page',
+                      taskDescription:
+                          'Maybe you’ve got an idea in mind already a book you’d really love to write.',
+                    ),
+                    TaskCard(
+                      projectName: 'Rubium Studio',
+                      taskTitle: 'Build the landing page',
+                      taskDescription:
+                          'Maybe you’ve got an idea in mind already a book you’d really love to write.',
+                    ),
+                    TaskCard(
+                      projectName: 'Rubium Studio',
+                      taskTitle: 'Build the landing page',
+                      taskDescription:
+                          'Maybe you’ve got an idea in mind already a book you’d really love to write.',
+                    ),
+                    TaskCard(
+                      projectName: 'Rubium Studio',
+                      taskTitle: 'Build the landing page',
+                      taskDescription:
+                          'Maybe you’ve got an idea in mind already a book you’d really love to write.',
+                    ),
+                  ],
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );
