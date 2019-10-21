@@ -25,7 +25,7 @@ class AppDrawer extends StatelessWidget {
               title: Text('Workspaces'),
               subtitle: Text('12 new updates'),
               trailing: Icon(Icons.view_carousel),
-              onTap: () => Navigator.pushNamed(context, '/projects')
+              onTap: () => Navigator.pushNamed(context, '/workspaces')
             ),
             ListTile(
               title: Text('Personal'),

@@ -33,38 +33,42 @@ class WorkspacesView extends StatelessWidget {
               child: ListView(
                 children: <Widget>[
                   ListTile(
-                      leading: CircleAvatar(
-                        child: Text('Q'),
-                      ),
-                      title: Text('Quak'),
-                      subtitle: Text('8 updates'),
-                      trailing: IconButton(
-                        onPressed: () {},
-                        icon: Icon(Icons.reorder),
-                      ),
+                    onTap: () {
+                      Navigator.pushNamed(context, '/workspace',
+                          arguments: {'name': 'Quak'});
+                    },
+                    leading: CircleAvatar(
+                      child: Text('Q'),
                     ),
-                    ListTile(
-                      leading: CircleAvatar(
-                        child: Text('R'),
-                      ),
-                      title: Text('Rubium Studio'),
-                      subtitle: Text('2 updates'),
-                      trailing: IconButton(
-                        onPressed: () {},
-                        icon: Icon(Icons.reorder),
-                      ),
+                    title: Text('Quak'),
+                    subtitle: Text('8 updates'),
+                    trailing: IconButton(
+                      onPressed: () {},
+                      icon: Icon(Icons.reorder),
                     ),
-                    ListTile(
-                      leading: CircleAvatar(
-                        child: Text('P'),
-                      ),
-                      title: Text('Panther App'),
-                      subtitle: Text('2 updates'),
-                      trailing: IconButton(
-                        onPressed: () {},
-                        icon: Icon(Icons.reorder),
-                      ),
+                  ),
+                  ListTile(
+                    leading: CircleAvatar(
+                      child: Text('R'),
                     ),
+                    title: Text('Rubium Studio'),
+                    subtitle: Text('2 updates'),
+                    trailing: IconButton(
+                      onPressed: () {},
+                      icon: Icon(Icons.reorder),
+                    ),
+                  ),
+                  ListTile(
+                    leading: CircleAvatar(
+                      child: Text('P'),
+                    ),
+                    title: Text('Panther App'),
+                    subtitle: Text('2 updates'),
+                    trailing: IconButton(
+                      onPressed: () {},
+                      icon: Icon(Icons.reorder),
+                    ),
+                  ),
                 ],
               ),
             )
