@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:panther_app/components/SegmentsOfControl.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 
+// Single Workspace view that shows tasks, chat and statistics
 class SingleWorkspaceView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -49,6 +50,7 @@ class SingleWorkspaceView extends StatelessWidget {
                     Container(
                       width: 300.0,
                       child: Container(
+                        // To be extracted later
                         child: Card(
                           child: Padding(
                             padding: const EdgeInsets.symmetric(
@@ -60,7 +62,7 @@ class SingleWorkspaceView extends StatelessWidget {
                               children: <Widget>[
                                 SizedBox(height: 10.0),
                                 Text(
-                                  'Today',
+                                  'Overdue',
                                   style: TextStyle(
                                     fontSize: 12.0,
                                     fontWeight: FontWeight.bold,
