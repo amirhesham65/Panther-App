@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:panther_app/components/SegmentsOfControl.dart';
-import 'package:panther_app/components/task_card.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 
 class SingleWorkspaceView extends StatelessWidget {
@@ -30,7 +29,7 @@ class SingleWorkspaceView extends StatelessWidget {
           IconButton(
             onPressed: () {},
             icon: Icon(Icons.more_vert),
-          )
+          ),
         ],
       ),
       body: SafeArea(
@@ -65,7 +64,7 @@ class SingleWorkspaceView extends StatelessWidget {
                                   style: TextStyle(
                                     fontSize: 12.0,
                                     fontWeight: FontWeight.bold,
-                                    color: Colors.blue,
+                                    color: Colors.red[300],
                                   ),
                                 ),
                                 SizedBox(height: 10.0),
