@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:panther_app/components/HomeTaskCard.dart';
 import 'package:panther_app/components/drawer.dart';
-import 'package:panther_app/components/task_card.dart';
 
 // The home (Today) view widget
 class HomeView extends StatefulWidget {
@@ -74,13 +74,13 @@ class _HomeViewState extends State<HomeView> {
                 child: ListView(
                   scrollDirection: Axis.vertical,
                   children: <Widget>[
-                    TaskCard(
+                    HomeTaskCard(
                       projectName: 'Rubium Studio',
                       taskTitle: 'Build the landing page',
                       taskDescription:
                           'Maybe you’ve got an idea in mind already a book you’d really love to write.',
                     ),
-                    TaskCard(
+                    HomeTaskCard(
                       projectName: 'Quak',
                       taskTitle: 'Rebuild the MVP',
                       taskDescription:

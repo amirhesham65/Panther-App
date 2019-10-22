@@ -34,8 +34,11 @@ class WorkspacesView extends StatelessWidget {
                 children: <Widget>[
                   ListTile(
                     onTap: () {
-                      Navigator.pushNamed(context, '/workspace',
-                          arguments: {'name': 'Quak'});
+                      Navigator.pushNamed(
+                        context,
+                        '/workspace',
+                        arguments: {'name': 'Quak'},
+                      );
                     },
                     leading: CircleAvatar(
                       child: Text('Q'),

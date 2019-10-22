@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 
-class TaskCard extends StatefulWidget {
+class HomeTaskCard extends StatefulWidget {
   // Accepting task data
   final String projectName;
   final String taskTitle;
   final String taskDescription;
 
-  TaskCard({this.projectName, this.taskTitle, this.taskDescription});
+  HomeTaskCard({this.projectName, this.taskTitle, this.taskDescription});
 
   @override
-  _TaskCardState createState() => _TaskCardState();
+  _HomeTaskCardState createState() => _HomeTaskCardState();
 }
 
-class _TaskCardState extends State<TaskCard> {
+class _HomeTaskCardState extends State<HomeTaskCard> {
   @override
   Widget build(BuildContext context) {
     return Container(

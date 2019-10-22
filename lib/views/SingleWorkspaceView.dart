@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:panther_app/components/SegmentsOfControl.dart';
-import 'package:percent_indicator/linear_percent_indicator.dart';
+import 'package:panther_app/components/WorkspaceTaskCard.dart';
 
 // Single Workspace view that shows tasks, chat and statistics
 class SingleWorkspaceView extends StatelessWidget {
@@ -47,70 +47,20 @@ class SingleWorkspaceView extends StatelessWidget {
               Expanded(
                 child: ListView(
                   children: <Widget>[
-                    Container(
-                      width: 300.0,
-                      child: Container(
-                        // To be extracted later
-                        child: Card(
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 20.0,
-                              vertical: 10.0,
-                            ),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                SizedBox(height: 10.0),
-                                Text(
-                                  'Overdue',
-                                  style: TextStyle(
-                                    fontSize: 12.0,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.red[300],
-                                  ),
-                                ),
-                                SizedBox(height: 10.0),
-                                Text(
-                                  'Wireframe the app layout',
-                                  style: TextStyle(
-                                    fontSize: 20.0,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                SizedBox(height: 10.0),
-                                Text(
-                                  'Start the UX design process by wireframing the whole app layout with flow.',
-                                  style: TextStyle(
-                                    fontSize: 12.0,
-                                    color: Theme.of(context)
-                                        .primaryTextTheme
-                                        .caption
-                                        .color,
-                                  ),
-                                ),
-                                Row(
-                                  children: <Widget>[
-                                    Icon(Icons.flag, color: Colors.grey),
-                                    Expanded(
-                                      child: LinearPercentIndicator(
-                                        percent: 0.25,
-                                        progressColor:
-                                            Theme.of(context).accentColor,
-                                        backgroundColor: Colors.grey,
-                                      ),
-                                    ),
-                                    IconButton(
-                                      onPressed: () {},
-                                      icon: Icon(Icons.check_circle_outline),
-                                      color: Colors.grey,
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
+                    WorkspaceTaskCard(
+                      taskStatus: 'Overdue',
+                      taskTitle: 'Wireframing the application',
+                      taskDescription: 'Starting to wireframe the layout of the next big app with all the elements needed.',
+                    ),
+                    WorkspaceTaskCard(
+                      taskStatus: 'Up Next',
+                      taskTitle: 'July meeting preperation',
+                      taskDescription: 'APIs curated by RapidAPI and recommended based on functionality offered, performance, and support.',
+                    ),
+                    WorkspaceTaskCard(
+                      taskStatus: 'Today',
+                      taskTitle: 'Revisiting the APIs and endpoints',
+                      taskDescription: 'Welcome to SendGrid’s Web API v3! This API is RESTful.',
                     )
                   ],
                 ),
