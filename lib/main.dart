@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:panther_app/app_state.dart';
+import 'package:panther_app/views/AddTask.dart';
 import 'package:panther_app/views/HomeView.dart';
 import 'package:panther_app/views/PersonalView.dart';
 import 'package:panther_app/views/SingleWorkspaceView.dart';
 import 'package:panther_app/views/WorkspacesView.dart';
 
-void main() => runApp(AppState(child: MyApp(),));
+void main() => runApp(AppState(
+      child: MyApp(),
+    ));
 
 // The main app root widget
 class MyApp extends StatelessWidget {
@@ -16,17 +20,16 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       // Theme controlling
       theme: ThemeData(
-        brightness: Brightness.dark,
-        primarySwatch: Colors.orange,  
-        accentColor: Colors.orange      
-      ),
-      home: HomeView(),
+          brightness: Brightness.dark,
+          primarySwatch: Colors.orange,
+          accentColor: Colors.orange),
+      initialRoute: '/',
       // Defining app routes
       routes: {
-        '/home': (context) => HomeView(),
+        '/': (context) => HomeView(),
         '/personal': (context) => PersonalView(),
         '/workspaces': (context) => WorkspacesView(),
-        '/workspace': (context) => SingleWorkspaceView()
+        '/workspace': (context) => SingleWorkspaceView(),
       },
     );
   }

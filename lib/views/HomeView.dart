@@ -1,9 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:panther_app/components/HomeTaskCard.dart';
 import 'package:panther_app/components/drawer.dart';
 import 'package:panther_app/task.dart';
+import 'package:panther_app/views/AddTask.dart';
 
 // The home (Today) view widget
 class HomeView extends StatefulWidget {
@@ -12,7 +14,6 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
-
   // Getting data from Firebase Firestore
   Widget _buildListBody(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
@@ -20,7 +21,7 @@ class _HomeViewState extends State<HomeView> {
       // The stream gets the data and the builder process that data
       builder: (context, snapshots) {
         // Check if the snapshot has data
-        if(!snapshots.hasData) return LinearProgressIndicator();
+        if (!snapshots.hasData) return LinearProgressIndicator();
         // Build the actual task list
         return _buildTaskList(context, snapshots.data.documents);
       },
@@ -28,11 +29,14 @@ class _HomeViewState extends State<HomeView> {
   }
 
   // Building the actual task list
-  Widget _buildTaskList(BuildContext context, List<DocumentSnapshot> snapshots) {
+  Widget _buildTaskList(
+      BuildContext context, List<DocumentSnapshot> snapshots) {
     return ListView(
       scrollDirection: Axis.vertical,
       // Iterating over the snapshots
-      children: snapshots.map((snapshot) => _buildTaskItem(context, snapshot)).toList(),
+      children: snapshots
+          .map((snapshot) => _buildTaskItem(context, snapshot))
+          .toList(),
     );
   }
 
@@ -49,7 +53,15 @@ class _HomeViewState extends State<HomeView> {
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          Navigator.push(
+            context,
+            PageTransition(
+              type: PageTransitionType.downToUp,
+              child: AddTask(),
+            ),
+          );
+        },
         child: Icon(
           Icons.add,
           color: Colors.white,
@@ -105,9 +117,7 @@ class _HomeViewState extends State<HomeView> {
                 height: 8.0,
               ),
               // Listing all today's tasks
-              Expanded(
-                child: _buildListBody(context)
-              ),
+              Expanded(child: _buildListBody(context)),
             ],
           ),
         ),
