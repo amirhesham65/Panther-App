@@ -22,15 +22,15 @@ class _SOCState extends State<SOC> {
       },
       children: <int, Widget>{
         0: Padding(
-          padding: EdgeInsets.symmetric(vertical: 5.0, horizontal: 20.0),
+          padding: EdgeInsets.symmetric(vertical: 5.0, horizontal: 16.0),
           child: Text("Today"),
         ),
         1: Padding(
-          padding: EdgeInsets.symmetric(vertical: 5.0, horizontal: 20.0),
+          padding: EdgeInsets.symmetric(vertical: 5.0, horizontal: 16.0),
           child: Text("Overdue"),
         ),
         2: Padding(
-          padding: EdgeInsets.symmetric(vertical: 5.0, horizontal: 20.0),
+          padding: EdgeInsets.symmetric(vertical: 5.0, horizontal: 16.0),
           child: Text("Up next"),
         ),
       },

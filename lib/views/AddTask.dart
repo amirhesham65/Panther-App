@@ -5,6 +5,7 @@ class AddTask extends StatefulWidget {
   _AddTaskState createState() => _AddTaskState();
 }
 
+// The Add Task model to submit new tasks
 class _AddTaskState extends State<AddTask> {
   final _formKey = GlobalKey<FormState>();
 
@@ -36,8 +37,7 @@ class _AddTaskState extends State<AddTask> {
         padding: const EdgeInsets.all(12.0),
         child: Form(
           key: _formKey,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+          child: ListView(
             children: <Widget>[
               TextFormField(
                 decoration: InputDecoration(
@@ -67,7 +67,7 @@ class _AddTaskState extends State<AddTask> {
               ),
               SizedBox(height: 8.0),
               TextFormField(
-                maxLines: 3,
+                maxLines: null,
                 decoration: InputDecoration(
                   hintText: 'Task description',
                   helperText: 'Describe your task in short sentence',
