@@ -20,9 +20,10 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       // Theme controlling
       theme: ThemeData(
-          brightness: Brightness.dark,
-          primarySwatch: Colors.orange,
-          accentColor: Colors.orange),
+        brightness: Brightness.dark,
+        primarySwatch: Colors.orange,
+        accentColor: Colors.orange,
+      ),
       initialRoute: '/',
       // Defining app routes
       routes: {
