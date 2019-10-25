@@ -1,7 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:panther_app/components/HomeTaskCard.dart';
 import 'package:panther_app/components/drawer.dart';
+import 'package:panther_app/task.dart';
 
 // The home (Today) view widget
 class HomeView extends StatefulWidget {
@@ -10,6 +12,39 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
+
+  // Getting data from Firebase Firestore
+  Widget _buildListBody(BuildContext context) {
+    return StreamBuilder<QuerySnapshot>(
+      stream: Firestore.instance.collection('tasks').snapshots(),
+      // The stream gets the data and the builder process that data
+      builder: (context, snapshots) {
+        // Check if the snapshot has data
+        if(!snapshots.hasData) return LinearProgressIndicator();
+        // Build the actual task list
+        return _buildTaskList(context, snapshots.data.documents);
+      },
+    );
+  }
+
+  // Building the actual task list
+  Widget _buildTaskList(BuildContext context, List<DocumentSnapshot> snapshots) {
+    return ListView(
+      scrollDirection: Axis.vertical,
+      // Iterating over the snapshots
+      children: snapshots.map((snapshot) => _buildTaskItem(context, snapshot)).toList(),
+    );
+  }
+
+  Widget _buildTaskItem(BuildContext context, DocumentSnapshot snapshot) {
+    final task = Task.fromSnapshot(snapshot);
+    return HomeTaskCard(
+      projectName: 'Rubium Studio',
+      taskTitle: task.title,
+      taskDescription: task.description,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -71,23 +106,7 @@ class _HomeViewState extends State<HomeView> {
               ),
               // Listing all today's tasks
               Expanded(
-                child: ListView(
-                  scrollDirection: Axis.vertical,
-                  children: <Widget>[
-                    HomeTaskCard(
-                      projectName: 'Rubium Studio',
-                      taskTitle: 'Build the landing page',
-                      taskDescription:
-                          'Maybe you’ve got an idea in mind already a book you’d really love to write.',
-                    ),
-                    HomeTaskCard(
-                      projectName: 'Quak',
-                      taskTitle: 'Rebuild the MVP',
-                      taskDescription:
-                          'Ask your audience what they want, and give them a few possibilities to choose from.',
-                    )
-                  ],
-                ),
+                child: _buildListBody(context)
               ),
             ],
           ),

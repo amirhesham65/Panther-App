@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>571576389476-c4vqojm006oanp93pk4moeipv8u3rnhl.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.571576389476-c4vqojm006oanp93pk4moeipv8u3rnhl</string>
+	<key>API_KEY</key>
+	<string>AIzaSyB8V2d97fwQFFLwjzjtz-I9yd72XILEUdo</string>
+	<key>GCM_SENDER_ID</key>
+	<string>571576389476</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.amirhesham.panther</string>
+	<key>PROJECT_ID</key>
+	<string>panther-app-01</string>
+	<key>STORAGE_BUCKET</key>
+	<string>panther-app-01.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:571576389476:ios:4f6ec9adf3da9b7b05b471</string>
+	<key>DATABASE_URL</key>
+	<string>https://panther-app-01.firebaseio.com</string>
+</dict>
+</plist>
