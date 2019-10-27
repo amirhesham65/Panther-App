@@ -9,7 +9,6 @@ class Task {
   // Formatting the task data f
   Task.fromMap(Map<String, dynamic> map, {this.reference})
       : assert(map['title'] != null),
-        assert(map['description'] != null),
         title = map['title'],
         description = map['description'];
 

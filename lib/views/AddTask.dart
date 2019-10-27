@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class AddTask extends StatefulWidget {
@@ -8,6 +9,25 @@ class AddTask extends StatefulWidget {
 // The Add Task model to submit new tasks
 class _AddTaskState extends State<AddTask> {
   final _formKey = GlobalKey<FormState>();
+
+  // Holding the state
+  String taskTitle;
+  String taskDescription;
+
+  // Adding a new task to the Cloud FireStore
+  void addTask() {
+    assert(taskTitle != null);
+    Firestore.instance.collection('tasks').document().setData(
+      {
+        'title': taskTitle,
+        'description': taskDescription,
+      },
+    ).then(
+      (val) {
+        Navigator.pop(context);
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +45,9 @@ class _AddTaskState extends State<AddTask> {
         ),
         actions: <Widget>[
           FlatButton(
-            onPressed: () {},
+            onPressed: () {
+              addTask();
+            },
             child: Text(
               'Done',
               style: TextStyle(color: Colors.orange),
@@ -40,6 +62,11 @@ class _AddTaskState extends State<AddTask> {
           child: ListView(
             children: <Widget>[
               TextFormField(
+                onChanged: (String value) {
+                  setState(() {
+                    taskTitle = value;
+                  });
+                },
                 decoration: InputDecoration(
                   labelText: 'Task name',
                   helperText: 'eg. Design the layout',
@@ -67,6 +94,11 @@ class _AddTaskState extends State<AddTask> {
               ),
               SizedBox(height: 8.0),
               TextFormField(
+                onChanged: (String value) {
+                  setState(() {
+                    taskDescription = value;
+                  });
+                },
                 maxLines: null,
                 decoration: InputDecoration(
                   hintText: 'Task description',

@@ -41,14 +41,21 @@ class _HomeTaskCardState extends State<HomeTaskCard> {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                SizedBox(height: 10.0),
-                Text(
-                  widget.taskDescription,
-                  style: TextStyle(
-                    fontSize: 12.0,
-                    color: Theme.of(context).primaryTextTheme.caption.color,
-                  ),
-                ),
+                (widget.taskDescription != null)
+                    ? Padding(
+                        padding: const EdgeInsets.fromLTRB(0.0, 8.0, 0.0, 0.0),
+                        child: Text(
+                          widget.taskDescription,
+                          style: TextStyle(
+                            fontSize: 12.0,
+                            color: Theme.of(context)
+                                .primaryTextTheme
+                                .caption
+                                .color,
+                          ),
+                        ),
+                      )
+                    : Container(),
                 Row(
                   children: <Widget>[
                     Icon(Icons.flag, color: Colors.grey),
