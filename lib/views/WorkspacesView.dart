@@ -5,22 +5,17 @@ class WorkspacesView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        child: Icon(
-          Icons.add,
-          color: Colors.white,
-        ),
-      ),
       appBar: AppBar(
         title: Text('Workspaces'),
-        backgroundColor: Theme.of(context).canvasColor,
-        elevation: 0.0,
+        backgroundColor: Theme.of(context).brightness == Brightness.dark
+            ? Colors.black26
+            : Colors.white,
         actions: <Widget>[
-          Padding(
-            padding: const EdgeInsets.fromLTRB(0.0, 0.0, 12.0, 0.0),
-            child: CircleAvatar(
-              child: Text('A'),
+          FlatButton(
+            onPressed: () {},
+            child: Text(
+              'Create',
+              style: TextStyle(color: Colors.orange),
             ),
           )
         ],
