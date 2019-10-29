@@ -1,17 +1,18 @@
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:panther_app/models/user.dart';
 
 // Defining the scope of data fetched from Google Authentication
 GoogleSignIn _googleSignIn = GoogleSignIn(scopes: <String>['email']);
 
 class AuthService {
   // The data
-  GoogleSignInAccount _currentUser; 
+  User _currentUser; 
 
   // Initializing the user authentication listener
   void initGoogleAuthListner(Function callBack) {
     // Listening to any SignIn/SignOut changes
-    _googleSignIn.onCurrentUserChanged.listen((GoogleSignInAccount account) {
-      _currentUser = account;
+    _googleSignIn.onCurrentUserChanged.listen((GoogleSignInAccount googleSignInAccount) {
+      _currentUser = User.fromGoogleSignInAcccount(googleSignInAccount);
       if (_currentUser != null) {
         callBack(_currentUser);
       }

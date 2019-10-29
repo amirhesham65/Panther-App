@@ -17,13 +17,12 @@ class _WelcomeViewState extends State<WelcomeView> {
   void initState() {
     super.initState();
     // Setup the Auth listener
-    auth.initGoogleAuthListner((user) {
-      AppState.of(context).setUser(user);
-    });
+    auth.initGoogleAuthListner((user) => AppState.of(context).setUserState(user));
   }
 
   @override
   Widget build(BuildContext context) {
+    String name = (AppState.of(context).currentUser != null) ? AppState.of(context).currentUser.displayName : 'none';
     return Scaffold(
       body: Container(
         padding: const EdgeInsets.all(8.0),
@@ -31,7 +30,7 @@ class _WelcomeViewState extends State<WelcomeView> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Text('Welcome to Panther', style: TextStyle(fontSize: 14.0, color: Colors.grey),),
+              Text('Welcome to Panther, Mr $name !', style: TextStyle(fontSize: 14.0, color: Colors.grey),),
               Text(
                 'Productivity done better',
                 style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
