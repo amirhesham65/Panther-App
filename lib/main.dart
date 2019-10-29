@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:panther_app/app_state.dart';
+import 'package:panther_app/services/app_state.dart';
 import 'package:panther_app/views/HomeView.dart';
 import 'package:panther_app/views/PersonalView.dart';
 import 'package:panther_app/views/SingleWorkspaceView.dart';
 import 'package:panther_app/views/WelcomeView.dart';
 import 'package:panther_app/views/WorkspacesView.dart';
 
-void main() => runApp(AppState(
-      child: MyApp(),
-    ));
+void main() => runApp(
+      AppState(
+        child: MyApp(),
+      ),
+    );
 
 // The main app root widget
 class MyApp extends StatelessWidget {

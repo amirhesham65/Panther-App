@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:panther_app/app_state.dart';
-import 'package:panther_app/auth.dart';
+import 'package:panther_app/services/app_state.dart';
+import 'package:panther_app/services/auth.dart';
 import 'package:panther_app/components/GoogleSignInButton.dart';
 
 AuthService auth = AuthService();
