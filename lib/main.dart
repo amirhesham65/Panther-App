@@ -3,6 +3,7 @@ import 'package:panther_app/app_state.dart';
 import 'package:panther_app/views/HomeView.dart';
 import 'package:panther_app/views/PersonalView.dart';
 import 'package:panther_app/views/SingleWorkspaceView.dart';
+import 'package:panther_app/views/WelcomeView.dart';
 import 'package:panther_app/views/WorkspacesView.dart';
 
 void main() => runApp(AppState(
@@ -18,14 +19,14 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       // Theme controlling
       theme: ThemeData(
-        brightness: Brightness.dark,
+        brightness: Brightness.light,
         primarySwatch: Colors.orange,
         accentColor: Colors.orange,
       ),
       initialRoute: '/',
       // Defining app routes
       routes: {
-        '/': (context) => HomeView(),
+        '/': (context) => WelcomeView(),
         '/personal': (context) => PersonalView(),
         '/workspaces': (context) => WorkspacesView(),
         '/workspace': (context) => SingleWorkspaceView(),

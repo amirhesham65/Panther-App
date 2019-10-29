@@ -20,6 +20,7 @@ class _HomeTaskCardState extends State<HomeTaskCard> {
       width: 300.0,
       child: Container(
         child: Card(
+          elevation: 4.0,
           child: Padding(
             padding:
                 const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
