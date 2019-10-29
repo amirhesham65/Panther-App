@@ -5,20 +5,16 @@ GoogleSignIn _googleSignIn = GoogleSignIn(scopes: <String>['email']);
 
 class AuthService {
   // The data
-  GoogleSignInAccount _currentUser;
+  GoogleSignInAccount _currentUser; 
 
-  void setUser(GoogleSignInAccount fetchedAccout) {
-    _currentUser = fetchedAccout;
-  }
-
-  // Initializing the user authentication listener 
+  // Initializing the user authentication listener
   void initGoogleAuthListner(Function callBack) {
     // Listening to any SignIn/SignOut changes
     _googleSignIn.onCurrentUserChanged.listen((GoogleSignInAccount account) {
       _currentUser = account;
       if (_currentUser != null) {
-         callBack(_currentUser);
-        }
+        callBack(_currentUser);
+      }
       // SigningIn with Google silently
       _googleSignIn.signInSilently();
     });

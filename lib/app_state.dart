@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 // Creating an inheritedWidget to contain the app state
 class _AppStateContainer extends InheritedWidget {
@@ -31,6 +32,13 @@ class AppState extends StatefulWidget {
 }
 
 class _AppStateState extends State<AppState> {
+  GoogleSignInAccount currentUser;
+
+  // Setting the user in the state
+  void setUser(GoogleSignInAccount fetchedAccout) {
+    currentUser = fetchedAccout;
+  }
+
   @override
   Widget build(BuildContext context) {
     return _AppStateContainer(

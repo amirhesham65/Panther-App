@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:panther_app/app_state.dart';
 import 'package:panther_app/auth.dart';
 import 'package:panther_app/components/GoogleSignInButton.dart';
 
@@ -17,7 +18,7 @@ class _WelcomeViewState extends State<WelcomeView> {
     super.initState();
     // Setup the Auth listener
     auth.initGoogleAuthListner((user) {
-      print('Hello, ${user.displayName}!');
+      AppState.of(context).setUser(user);
     });
   }
 
