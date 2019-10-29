@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "571576389476",
+    "firebase_url": "https://panther-app-01.firebaseio.com",
+    "project_id": "panther-app-01",
+    "storage_bucket": "panther-app-01.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:571576389476:android:189880ff2732c76c05b471",
+        "android_client_info": {
+          "package_name": "com.amirhesham.panther"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "571576389476-vmem8gdf5gc850p810oap61pjqnrsd9e.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.amirhesham.panther",
+            "certificate_hash": "95a5dc04cb43f8dd6c5af18d948161663b7e8438"
+          }
+        },
+        {
+          "client_id": "571576389476-h2jkgs1lrc8be871rto3ir9b94ak86id.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBEDI63GPvz35Nytvwzvnz_Gcumh9pUTn0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "571576389476-h2jkgs1lrc8be871rto3ir9b94ak86id.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "571576389476-c4vqojm006oanp93pk4moeipv8u3rnhl.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.amirhesham.panther"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
