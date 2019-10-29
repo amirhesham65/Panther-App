@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:panther_app/components/HomeTaskCard.dart';
 import 'package:panther_app/components/drawer.dart';
-import 'package:panther_app/task.dart';
+import 'package:panther_app/models/task.dart';
 import 'package:panther_app/views/AddTask.dart';
 
 // The home (Today) view widget
