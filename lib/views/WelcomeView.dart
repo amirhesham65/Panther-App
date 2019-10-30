@@ -12,17 +12,16 @@ class WelcomeView extends StatefulWidget {
 }
 
 class _WelcomeViewState extends State<WelcomeView> {
-
   @override
   void initState() {
     super.initState();
     // Setup the Auth listener
-    auth.initGoogleAuthListner((user) => AppState.of(context).setUserState(user));
+    auth.initGoogleAuthListner((user) =>
+        Navigator.pushReplacementNamed(context, '/loading', arguments: user));
   }
 
   @override
   Widget build(BuildContext context) {
-    String name = (AppState.of(context).currentUser != null) ? AppState.of(context).currentUser.displayName : 'none';
     return Scaffold(
       body: Container(
         padding: const EdgeInsets.all(8.0),
@@ -30,7 +29,10 @@ class _WelcomeViewState extends State<WelcomeView> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Text('Welcome to Panther, Mr $name !', style: TextStyle(fontSize: 14.0, color: Colors.grey),),
+              Text(
+                'Welcome to Panther',
+                style: TextStyle(fontSize: 14.0, color: Colors.grey),
+              ),
               Text(
                 'Productivity done better',
                 style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
@@ -39,9 +41,7 @@ class _WelcomeViewState extends State<WelcomeView> {
               GoogleSignInButton(onPressed: auth.handleSignIn),
               SizedBox(height: 30.0),
               RaisedButton(
-                child: Text('SignOut'),
-                onPressed: auth.handleSignOut
-              ),
+                  child: Text('SignOut'), onPressed: auth.handleSignOut),
               Container(
                 width: 300,
                 child: Text(

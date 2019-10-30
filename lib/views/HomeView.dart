@@ -5,6 +5,7 @@ import 'package:page_transition/page_transition.dart';
 import 'package:panther_app/components/HomeTaskCard.dart';
 import 'package:panther_app/components/drawer.dart';
 import 'package:panther_app/models/task.dart';
+import 'package:panther_app/models/user.dart';
 import 'package:panther_app/views/AddTask.dart';
 
 // The home (Today) view widget
@@ -14,6 +15,7 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
+
   // Getting data from Firebase Firestore
   Widget _buildListBody(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
@@ -51,6 +53,8 @@ class _HomeViewState extends State<HomeView> {
 
   @override
   Widget build(BuildContext context) {
+    User currentUser = ModalRoute.of(context).settings.arguments;
+    print(currentUser.displayName);
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: () {
