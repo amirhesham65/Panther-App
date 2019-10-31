@@ -30,32 +30,35 @@ class _HomeViewState extends State<HomeView> {
   // Placeholder to display when there is no data (tasks)
   Widget _todayTasksPlaceHolder() {
     return Container(
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Image(
+      child: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Opacity(
+              opacity: 0.8,
+              child: Image(
                 image: AssetImage('assets/images/ill1.png'),
                 width: 200,
               ),
-              SizedBox(height: 32.0),
-              Text(
-                'What do you want to accomplish today?',
-                style: TextStyle(color: Colors.grey, fontSize: 14.0),
+            ),
+            SizedBox(height: 32.0),
+            Text(
+              'What do you want to accomplish today?',
+              style: TextStyle(color: Colors.grey, fontSize: 14.0),
+            ),
+            SizedBox(height: 24.0),
+            RaisedButton(
+              onPressed: () => showAddTaskView(context),
+              color: Theme.of(context).primaryColor,
+              child: Text(
+                'Add a task',
+                style: TextStyle(color: Colors.white),
               ),
-              SizedBox(height: 24.0),
-              RaisedButton(
-                onPressed: () => showAddTaskView(context),
-                color: Theme.of(context).primaryColor,
-                child: Text(
-                  'Add a task',
-                  style: TextStyle(color: Colors.white),
-                ),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
-      );
+      ),
+    );
   }
 
   // Getting data from Firebase Firestore
@@ -99,8 +102,9 @@ class _HomeViewState extends State<HomeView> {
 
   @override
   Widget build(BuildContext context) {
-    if(ModalRoute.of(context).settings.arguments != null) {
-      AppState.of(context).setUserState(ModalRoute.of(context).settings.arguments);
+    if (ModalRoute.of(context).settings.arguments != null) {
+      AppState.of(context)
+          .setUserState(ModalRoute.of(context).settings.arguments);
     }
     User user = AppState.of(context).currentUser;
     return Scaffold(
