@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:panther_app/services/app_state.dart';
-import 'package:panther_app/views/Controller.dart';
 import 'package:panther_app/views/HomeView.dart';
 import 'package:panther_app/views/LoadingView.dart';
 import 'package:panther_app/views/PersonalView.dart';
