@@ -1,6 +1,19 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:panther_app/models/workspace.dart';
+import 'package:panther_app/views/AddWorkspace.dart';
+
+// Showing Add workspace View
+void showAddWorkspaceView(BuildContext context) {
+  Navigator.push(
+    context,
+    PageTransition(
+      type: PageTransitionType.downToUp,
+      child: AddWorkspace(),
+    ),
+  );
+}
 
 // The listing projects view
 class WorkspacesView extends StatelessWidget {
@@ -44,7 +57,7 @@ class WorkspacesView extends StatelessWidget {
         child: Text(workspace.name[0]),
       ),
       title: Text(workspace.name),
-      subtitle: Text('${workspace.number} updates'),
+      subtitle: Text('0 updates'),
       trailing: IconButton(
         onPressed: () {},
         icon: Icon(Icons.reorder),
@@ -62,7 +75,7 @@ class WorkspacesView extends StatelessWidget {
             : Colors.white,
         actions: <Widget>[
           FlatButton(
-            onPressed: () {},
+            onPressed: () => showAddWorkspaceView(context),
             child: Text(
               'Create',
               style: TextStyle(color: Colors.orange),
