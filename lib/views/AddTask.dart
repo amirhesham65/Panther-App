@@ -45,9 +45,7 @@ class _AddTaskState extends State<AddTask> {
         ),
         actions: <Widget>[
           FlatButton(
-            onPressed: () {
-              addTask();
-            },
+            onPressed: addTask,
             child: Text(
               'Done',
               style: TextStyle(color: Colors.orange),
