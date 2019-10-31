@@ -11,10 +11,15 @@ class LoadingView extends StatefulWidget {
 class _LoadingViewState extends State<LoadingView> {
   @override
   Widget build(BuildContext context) {
-    if(ModalRoute.of(context).settings.arguments != null) {
-      AppState.of(context).setUserState(ModalRoute.of(context).settings.arguments);
+    if(AppState.of(context).currentUser != null) {
+      Future.delayed(Duration(seconds: 2)).then((val) {
+        Navigator.pushReplacementNamed(context, '/home');
+      });
+    }else {
+      Future.delayed(Duration(seconds: 2)).then((val) {
+        Navigator.pushReplacementNamed(context, '/welcome');
+      });
     }
-    User user = AppState.of(context).currentUser;
     return Scaffold(
       body: Center(
         child: Column(
@@ -26,7 +31,7 @@ class _LoadingViewState extends State<LoadingView> {
             ),
             SizedBox(height: 18.0),
             Text(
-              'Happy to have you onboard, ${user.displayName.split(' ')[0]}!',
+              'Welcome onboard!',
               style: TextStyle(color: Colors.grey),
             )
           ],

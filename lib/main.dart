@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:panther_app/services/app_state.dart';
+import 'package:panther_app/views/Controller.dart';
 import 'package:panther_app/views/HomeView.dart';
 import 'package:panther_app/views/LoadingView.dart';
 import 'package:panther_app/views/PersonalView.dart';
@@ -29,8 +30,8 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       // Defining app routes
       routes: {
-        '/': (context) => WelcomeView(),
-        '/loading': (context) => LoadingView(),
+        '/': (context) => LoadingView(),
+        '/welcome': (context) => WelcomeView(),
         '/home': (context) => HomeView(),
         '/personal': (context) => PersonalView(),
         '/workspaces': (context) => WorkspacesView(),
