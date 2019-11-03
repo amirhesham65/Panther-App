@@ -17,12 +17,10 @@ class _AddTaskState extends State<AddTask> {
   // Adding a new task to the Cloud FireStore
   void addTask() {
     assert(taskTitle != null);
-    Firestore.instance.collection('tasks').document().setData(
-      {
-        'title': taskTitle,
-        'description': taskDescription,
-      },
-    ).then(
+    Firestore.instance.collection('tasks').document().setData({
+      'title': taskTitle,
+      'description': taskDescription,
+    }).then(
       (val) {
         Navigator.pop(context);
       },

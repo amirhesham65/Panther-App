@@ -17,12 +17,10 @@ class _AddWorkspaceState extends State<AddWorkspace> {
   // Adding a new task to the Cloud FireStore
   void addWorkspace() {
     assert(workspaceName != null);
-    Firestore.instance.collection('workspaces').document().setData(
-      {
-        'name': workspaceName,
-        'number': workspaceDescription,
-      },
-    ).then(
+    Firestore.instance.collection('workspaces').document().setData({
+      'name': workspaceName,
+      'number': workspaceDescription,
+    }).then(
       (val) {
         Navigator.pop(context);
       },
