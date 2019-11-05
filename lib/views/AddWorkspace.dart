@@ -1,5 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:panther_app/models/user.dart';
+import 'package:panther_app/services/app_state.dart';
+import 'package:panther_app/services/database.dart';
 
 class AddWorkspace extends StatefulWidget {
   @override
@@ -14,21 +17,11 @@ class _AddWorkspaceState extends State<AddWorkspace> {
   String workspaceName;
   String workspaceDescription;
 
-  // Adding a new task to the Cloud FireStore
-  void addWorkspace() {
-    assert(workspaceName != null);
-    Firestore.instance.collection('workspaces').document().setData({
-      'name': workspaceName,
-      'number': workspaceDescription,
-    }).then(
-      (val) {
-        Navigator.pop(context);
-      },
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
+    // Getting current user
+    User _currentUser = AppState.of(context).currentUser;
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).brightness == Brightness.dark
@@ -43,7 +36,10 @@ class _AddWorkspaceState extends State<AddWorkspace> {
         ),
         actions: <Widget>[
           FlatButton(
-            onPressed: addWorkspace,
+            onPressed: () async {
+              await databaseService.createWorkspace(currentUser: _currentUser, workspaceName: workspaceName, workspaceDescription: workspaceDescription);
+              Navigator.pop(context);
+            },
             child: Text(
               'Done',
               style: TextStyle(color: Colors.orange),

@@ -106,7 +106,7 @@ class _HomeViewState extends State<HomeView> {
       AppState.of(context)
           .setUserState(ModalRoute.of(context).settings.arguments);
     }
-    User user = AppState.of(context).currentUser;
+    // User user = AppState.of(context).currentUser;
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: () => showAddTaskView(context),

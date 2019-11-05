@@ -10,13 +10,14 @@ class LoadingView extends StatefulWidget {
 class _LoadingViewState extends State<LoadingView> {
   @override
   Widget build(BuildContext context) {
-    if(AppState.of(context).currentUser != null) {
+    if(AppState.of(context).currentUser == null) {
+      print('is null dudue');
       Future.delayed(Duration(seconds: 2)).then((val) {
-        Navigator.pushReplacementNamed(context, '/home');
+        Navigator.pushReplacementNamed(context, '/welcome');
       });
     }else {
       Future.delayed(Duration(seconds: 2)).then((val) {
-        Navigator.pushReplacementNamed(context, '/welcome');
+        Navigator.pushReplacementNamed(context, '/home');
       });
     }
     return Scaffold(
