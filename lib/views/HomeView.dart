@@ -94,9 +94,11 @@ class _HomeViewState extends State<HomeView> {
   Widget _buildTaskItem(BuildContext context, DocumentSnapshot snapshot) {
     final task = Task.fromSnapshot(snapshot);
     return HomeTaskCard(
+      taskId: task.reference.documentID,
       taskWorkspaceName: task.workspaceName,
       taskTitle: task.title,
       taskDescription: task.description,
+      taskIsCompleted: task.isCompleted,
     );
   }
 

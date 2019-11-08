@@ -65,7 +65,7 @@ class _WorkspaceTaskCardState extends State<WorkspaceTaskCard> {
                 ),
                 SizedBox(height: 10.0),
                 Text(
-                  widget.taskDescription,
+                  widget.taskDescription ?? '',
                   style: TextStyle(
                     fontSize: 12.0,
                     color: Theme.of(context).primaryTextTheme.caption.color,

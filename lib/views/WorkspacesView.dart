@@ -56,7 +56,7 @@ class WorkspacesView extends StatelessWidget {
         Navigator.pushNamed(
           context,
           '/workspace',
-          arguments: {'name': 'Quak'},
+          arguments: workspace,
         );
       },
       leading: CircleAvatar(

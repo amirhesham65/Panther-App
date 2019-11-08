@@ -5,6 +5,8 @@ class Task {
   String description;
   String workspaceId;
   String workspaceName;
+  bool isCompleted;
+
   // The document reference will be set to snapshot reference
   DocumentReference reference;
 
@@ -14,7 +16,8 @@ class Task {
         title = map['title'],
         workspaceId = map['workspaceId'],
         workspaceName = map['workspaceName'],
-        description = map['description'];
+        description = map['description'],
+        isCompleted = map['isCompleted'];
 
   // Formatting the snapshot data
   Task.fromSnapshot(DocumentSnapshot snapshot) : this.fromMap(snapshot.data, reference: snapshot.reference);

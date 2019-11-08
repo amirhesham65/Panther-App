@@ -1,11 +1,57 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:panther_app/components/SegmentsOfControl.dart';
 import 'package:panther_app/components/WorkspaceTaskCard.dart';
+import 'package:panther_app/models/task.dart';
+import 'package:panther_app/models/workspace.dart';
 
 // Single Workspace view that shows tasks, chat and statistics
-class SingleWorkspaceView extends StatelessWidget {
+class SingleWorkspaceView extends StatefulWidget {
+  @override
+  _SingleWorkspaceViewState createState() => _SingleWorkspaceViewState();
+}
+
+class _SingleWorkspaceViewState extends State<SingleWorkspaceView> {
+  // Getting data from Firebase Firestore
+  Widget _buildListBody(BuildContext context) {
+    final Workspace workspace = ModalRoute.of(context).settings.arguments;
+    return StreamBuilder<QuerySnapshot>(
+      stream: Firestore.instance.collection('tasks').where('workspaceId', isEqualTo: workspace.reference.documentID).snapshots(),
+      // The stream gets the data and the builder process that data
+      builder: (context, snapshots) {
+        // Check if the snapshot has data
+        if (!snapshots.hasData) return LinearProgressIndicator();
+        // Build the actual task list
+        return _buildTaskList(context, snapshots.data.documents);
+      },
+    );
+  }
+
+  // Building the actual task list
+  Widget _buildTaskList(
+      BuildContext context, List<DocumentSnapshot> snapshots) {
+    return ListView(
+      scrollDirection: Axis.vertical,
+      // Iterating over the snapshots
+      children: snapshots
+          .map((snapshot) => _buildTaskItem(context, snapshot))
+          .toList(),
+    );
+  }
+
+  // Building each task list item
+  Widget _buildTaskItem(BuildContext context, DocumentSnapshot snapshot) {
+    final task = Task.fromSnapshot(snapshot);
+    return WorkspaceTaskCard(
+      taskStatus: 'Overdue',
+      taskTitle: task.title,
+      taskDescription: task.description,
+    );
+  }
   @override
   Widget build(BuildContext context) {
+    // Recieving the workspace from route arguments
+    final Workspace workspace = ModalRoute.of(context).settings.arguments;
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: () {},
@@ -15,7 +61,7 @@ class SingleWorkspaceView extends StatelessWidget {
         ),
       ),
       appBar: AppBar(
-        title: Text('Quak'),
+        title: Text(workspace.name),
         backgroundColor: Theme.of(context).canvasColor,
         elevation: 0.0,
         actions: <Widget>[
@@ -45,25 +91,7 @@ class SingleWorkspaceView extends StatelessWidget {
                 height: 12.0,
               ),
               Expanded(
-                child: ListView(
-                  children: <Widget>[
-                    WorkspaceTaskCard(
-                      taskStatus: 'Overdue',
-                      taskTitle: 'Wireframing the application',
-                      taskDescription: 'Starting to wireframe the layout of the next big app with all the elements needed.',
-                    ),
-                    WorkspaceTaskCard(
-                      taskStatus: 'Up Next',
-                      taskTitle: 'July meeting preperation',
-                      taskDescription: 'APIs curated by RapidAPI and recommended based on functionality offered, performance, and support.',
-                    ),
-                    WorkspaceTaskCard(
-                      taskStatus: 'Today',
-                      taskTitle: 'Revisiting the APIs and endpoints',
-                      taskDescription: 'Welcome to SendGrid’s Web API v3! This API is RESTful.',
-                    )
-                  ],
-                ),
+                child: _buildListBody(context)
               )
             ],
           ),

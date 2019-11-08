@@ -1,19 +1,25 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 
 class HomeTaskCard extends StatefulWidget {
   // Accepting task data
+  final String taskId;
   final String taskTitle;
   final String taskDescription;
   final String taskWorkspaceName;
+  final bool taskIsCompleted;
 
-  HomeTaskCard({this.taskTitle, this.taskDescription, this.taskWorkspaceName});
+  HomeTaskCard({this.taskId, this.taskTitle, this.taskDescription, this.taskWorkspaceName, this.taskIsCompleted});
 
   @override
   _HomeTaskCardState createState() => _HomeTaskCardState();
 }
 
 class _HomeTaskCardState extends State<HomeTaskCard> {
+
+
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -68,9 +74,13 @@ class _HomeTaskCardState extends State<HomeTaskCard> {
                       ),
                     ),
                     IconButton(
-                      onPressed: () {},
-                      icon: Icon(Icons.check_circle_outline),
-                      color: Colors.grey,
+                      onPressed: () {
+                        Firestore.instance.collection('tasks').document(widget.taskId).updateData({
+                          'isCompleted': !widget.taskIsCompleted
+                        });
+                      },
+                      icon: (widget.taskIsCompleted) ? Icon(Icons.check_circle) : Icon(Icons.check_circle_outline),
+                      color: (widget.taskIsCompleted) ? Theme.of(context).accentColor : Colors.grey,
                     ),
                   ],
                 ),

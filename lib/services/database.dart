@@ -40,6 +40,7 @@ class DatabaseService {
       'workspaceName': (await getWorkspaceById(workspaceId))['name'],
       'title': taskTitle,
       'description': taskDescription,
+      'isCompleted': false
     });
   }
 
