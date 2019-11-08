@@ -33,7 +33,8 @@ class DatabaseService {
   }
 
   // Adding a new task to the Cloud FireStore
-  Future<void> createTask({String taskTitle, String taskDescription, String workspaceId}) async{
+  Future<void> createTask(
+      {String taskTitle, String taskDescription, String workspaceId}) async {
     assert(taskTitle != null);
     await Firestore.instance.collection('tasks').document().setData({
       'workspaceId': workspaceId,
@@ -46,23 +47,41 @@ class DatabaseService {
 
   // Streaming the user's workspaces
   Stream<QuerySnapshot> getUsersWorkspaces(User currentUser) {
-    return Firestore.instance.collection('workspaces').where('users', arrayContains: currentUser.id).snapshots();
+    return Firestore.instance
+        .collection('workspaces')
+        .where('users', arrayContains: currentUser.id)
+        .snapshots();
   }
 
   // Returnning workspace data by id
-  Future<Map> getWorkspaceById(String id) async{
-    DocumentSnapshot snapshot = await Firestore.instance.collection('workspaces').document(id).get();
+  Future<Map> getWorkspaceById(String id) async {
+    DocumentSnapshot snapshot =
+        await Firestore.instance.collection('workspaces').document(id).get();
     return snapshot.data;
   }
 
   // Adding workspace to the user
-  Future<void> createWorkspace({User currentUser, String workspaceName, String workspaceDescription}) async {
+  Future<void> createWorkspace(
+      {User currentUser,
+      String workspaceName,
+      String workspaceDescription}) async {
     assert(workspaceName != null);
-    return await Firestore.instance.collection('workspaces').document().setData({
+    return await Firestore.instance
+        .collection('workspaces')
+        .document()
+        .setData({
       'users': [currentUser.id],
       'name': workspaceName,
       'description': workspaceDescription,
     });
+  }
+
+  // Toggle task isCompleted status
+  Future<void> completeTask(String taskId, bool isCompleted) async {
+    await Firestore.instance
+        .collection('tasks')
+        .document(taskId)
+        .updateData({'isCompleted': !isCompleted});
   }
 }
 

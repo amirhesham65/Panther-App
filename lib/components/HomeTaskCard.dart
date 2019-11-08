@@ -1,5 +1,5 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:panther_app/services/database.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 
 class HomeTaskCard extends StatefulWidget {
@@ -74,11 +74,7 @@ class _HomeTaskCardState extends State<HomeTaskCard> {
                       ),
                     ),
                     IconButton(
-                      onPressed: () {
-                        Firestore.instance.collection('tasks').document(widget.taskId).updateData({
-                          'isCompleted': !widget.taskIsCompleted
-                        });
-                      },
+                      onPressed: () => databaseService.completeTask(widget.taskId, widget.taskIsCompleted),
                       icon: (widget.taskIsCompleted) ? Icon(Icons.check_circle) : Icon(Icons.check_circle_outline),
                       color: (widget.taskIsCompleted) ? Theme.of(context).accentColor : Colors.grey,
                     ),
