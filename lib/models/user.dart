@@ -1,4 +1,4 @@
-import 'package:google_sign_in/google_sign_in.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class User {
   String id;
@@ -6,13 +6,15 @@ class User {
   String email;
   String photoUrl;
 
+  User({this.id});
+
   // Serializing a user object from Google into custom user object
-  User.fromGoogleSignInAcccount(GoogleSignInAccount googleSignInAccount) {
-    if (googleSignInAccount != null) {
-      id = googleSignInAccount.id;
-      displayName = googleSignInAccount.displayName;
-      email = googleSignInAccount.email;
-      photoUrl = googleSignInAccount.photoUrl;
+  User.fromFirebaseUserInstance(FirebaseUser firebaseUser) {
+    if (firebaseUser != null) {
+      id = firebaseUser.uid;
+      displayName = firebaseUser.displayName;
+      email = firebaseUser.email;
+      photoUrl = firebaseUser.photoUrl;
     }
   }
 }

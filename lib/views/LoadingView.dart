@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:panther_app/services/app_state.dart';
+import 'package:panther_app/models/user.dart';
+import 'package:panther_app/views/HomeView.dart';
+import 'package:panther_app/views/WelcomeView.dart';
+import 'package:provider/provider.dart';
 
 class LoadingView extends StatefulWidget {
   @override
@@ -10,33 +13,12 @@ class LoadingView extends StatefulWidget {
 class _LoadingViewState extends State<LoadingView> {
   @override
   Widget build(BuildContext context) {
-    if(AppState.of(context).currentUser == null) {
-      print('is null dudue');
-      Future.delayed(Duration(seconds: 2)).then((val) {
-        Navigator.pushReplacementNamed(context, '/welcome');
-      });
-    }else {
-      Future.delayed(Duration(seconds: 2)).then((val) {
-        Navigator.pushReplacementNamed(context, '/home');
-      });
+    final user = Provider.of<User>(context);
+
+    if (user == null) {
+      return WelcomeView();
+    } else {
+      return HomeView();
     }
-    return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            SpinKitWave(
-              color: Colors.black87,
-              size: 30,
-            ),
-            SizedBox(height: 18.0),
-            Text(
-              'Welcome onboard!',
-              style: TextStyle(color: Colors.grey),
-            )
-          ],
-        ),
-      ),
-    );
   }
 }

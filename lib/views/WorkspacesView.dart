@@ -4,7 +4,9 @@ import 'package:page_transition/page_transition.dart';
 import 'package:panther_app/models/user.dart';
 import 'package:panther_app/models/workspace.dart';
 import 'package:panther_app/services/app_state.dart';
+import 'package:panther_app/services/database.dart';
 import 'package:panther_app/views/AddWorkspace.dart';
+import 'package:provider/provider.dart';
 
 // Showing Add workspace View
 void showAddWorkspaceView(BuildContext context) {
@@ -22,9 +24,9 @@ class WorkspacesView extends StatelessWidget {
   
   // Getting data from Firebase Firestore
   Widget _buildListBody(BuildContext context) {
-    User _currentUser = AppState.of(context).currentUser;
+    final User currentUser = Provider.of<User>(context);
     return StreamBuilder<QuerySnapshot>(
-      stream: Firestore.instance.collection('workspaces').where('users', arrayContains: _currentUser.email).snapshots(),
+      stream: databaseService.getUsersWorkspaces(currentUser),
       // The stream gets the data and the builder process that data
       builder: (context, snapshots) {
         // Check if the snapshot has data

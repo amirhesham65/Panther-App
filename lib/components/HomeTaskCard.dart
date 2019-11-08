@@ -3,11 +3,11 @@ import 'package:percent_indicator/percent_indicator.dart';
 
 class HomeTaskCard extends StatefulWidget {
   // Accepting task data
-  final String projectName;
   final String taskTitle;
   final String taskDescription;
+  final String taskWorkspaceName;
 
-  HomeTaskCard({this.projectName, this.taskTitle, this.taskDescription});
+  HomeTaskCard({this.taskTitle, this.taskDescription, this.taskWorkspaceName});
 
   @override
   _HomeTaskCardState createState() => _HomeTaskCardState();
@@ -29,7 +29,7 @@ class _HomeTaskCardState extends State<HomeTaskCard> {
               children: <Widget>[
                 SizedBox(height: 10.0),
                 Text(
-                  widget.projectName,
+                  widget.taskWorkspaceName,
                   style: TextStyle(
                     color: Theme.of(context).primaryTextTheme.caption.color,
                   ),

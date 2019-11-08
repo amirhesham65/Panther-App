@@ -2,26 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:panther_app/models/user.dart';
 
 class DatabaseService {
-  // Adding workspace to the user
-  Future<void> createWorkspace(
-      {User currentUser,
-      String workspaceName,
-      String workspaceDescription}) async {
-    assert(workspaceName != null);
-    return await Firestore.instance
-        .collection('workspaces')
-        .document()
-        .setData({
-      'users': [currentUser.email],
-      'name': workspaceName,
-      'description': workspaceDescription,
-    });
-  }
-
   // Adding a user to the DB directly
   Future<User> _addUserToDatabase(User currentUser) async {
     await Firestore.instance.collection('users').document().setData({
-      'googleId': currentUser.id,
+      'id': currentUser.id,
       'displayName': currentUser.displayName,
       'email': currentUser.email,
       'photoUrl': currentUser.photoUrl
@@ -46,6 +30,38 @@ class DatabaseService {
       });
     }
     return currentUser;
+  }
+
+  // Adding a new task to the Cloud FireStore
+  Future<void> createTask({String taskTitle, String taskDescription, String workspaceId}) async{
+    assert(taskTitle != null);
+    await Firestore.instance.collection('tasks').document().setData({
+      'workspaceId': workspaceId,
+      'workspaceName': (await getWorkspaceById(workspaceId))['name'],
+      'title': taskTitle,
+      'description': taskDescription,
+    });
+  }
+
+  // Streaming the user's workspaces
+  Stream<QuerySnapshot> getUsersWorkspaces(User currentUser) {
+    return Firestore.instance.collection('workspaces').where('users', arrayContains: currentUser.id).snapshots();
+  }
+
+  // Returnning workspace data by id
+  Future<Map> getWorkspaceById(String id) async{
+    DocumentSnapshot snapshot = await Firestore.instance.collection('workspaces').document(id).get();
+    return snapshot.data;
+  }
+
+  // Adding workspace to the user
+  Future<void> createWorkspace({User currentUser, String workspaceName, String workspaceDescription}) async {
+    assert(workspaceName != null);
+    return await Firestore.instance.collection('workspaces').document().setData({
+      'users': [currentUser.id],
+      'name': workspaceName,
+      'description': workspaceDescription,
+    });
   }
 }
 

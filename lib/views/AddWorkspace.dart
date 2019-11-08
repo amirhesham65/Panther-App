@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:panther_app/models/user.dart';
 import 'package:panther_app/services/app_state.dart';
 import 'package:panther_app/services/database.dart';
+import 'package:provider/provider.dart';
 
 class AddWorkspace extends StatefulWidget {
   @override
@@ -20,7 +21,7 @@ class _AddWorkspaceState extends State<AddWorkspace> {
   @override
   Widget build(BuildContext context) {
     // Getting current user
-    User _currentUser = AppState.of(context).currentUser;
+    final User currentUser = Provider.of<User>(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -37,7 +38,7 @@ class _AddWorkspaceState extends State<AddWorkspace> {
         actions: <Widget>[
           FlatButton(
             onPressed: () async {
-              await databaseService.createWorkspace(currentUser: _currentUser, workspaceName: workspaceName, workspaceDescription: workspaceDescription);
+              await databaseService.createWorkspace(currentUser: currentUser, workspaceName: workspaceName, workspaceDescription: workspaceDescription);
               Navigator.pop(context);
             },
             child: Text(

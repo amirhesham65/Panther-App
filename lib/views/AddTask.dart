@@ -1,5 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:panther_app/models/user.dart';
+import 'package:panther_app/models/workspace.dart';
+import 'package:panther_app/services/database.dart';
+import 'package:provider/provider.dart';
 
 class AddTask extends StatefulWidget {
   @override
@@ -13,22 +17,45 @@ class _AddTaskState extends State<AddTask> {
   // Holding the state
   String taskTitle;
   String taskDescription;
-
-  // Adding a new task to the Cloud FireStore
-  void addTask() {
-    assert(taskTitle != null);
-    Firestore.instance.collection('tasks').document().setData({
-      'title': taskTitle,
-      'description': taskDescription,
-    }).then(
-      (val) {
-        Navigator.pop(context);
-      },
-    );
-  }
+  String taskWorkspace;
 
   @override
   Widget build(BuildContext context) {
+    final User currentUser = Provider.of<User>(context);
+
+    Widget _buildDropDown(
+        BuildContext context, List<DocumentSnapshot> snapshots) {
+      List<Workspace> workspaces = snapshots
+          .map((snapshot) => Workspace.fromSnapshot(snapshot))
+          .toList();
+      return DropdownButton<String>(
+        isExpanded: true,
+        hint: Text('Choose a workspace'),
+        value: taskWorkspace,
+        onChanged: (val) {
+          setState(() {
+            taskWorkspace = val;
+          });
+        },
+        items: workspaces.map((Workspace workspace) {
+          return DropdownMenuItem<String>(
+            value: workspace.reference.documentID,
+            child: Text(workspace.name),
+          );
+        }).toList(),
+      );
+    }
+
+    Widget _buildWorkspacesDropDown() {
+      return StreamBuilder<QuerySnapshot>(
+        stream: databaseService.getUsersWorkspaces(currentUser),
+        builder: (context, snapshots) {
+          if (!snapshots.hasData) return LinearProgressIndicator();
+          return _buildDropDown(context, snapshots.data.documents);
+        },
+      );
+    }
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).brightness == Brightness.dark
@@ -43,7 +70,15 @@ class _AddTaskState extends State<AddTask> {
         ),
         actions: <Widget>[
           FlatButton(
-            onPressed: addTask,
+            onPressed: () {
+              databaseService
+                  .createTask(
+                    taskTitle: taskTitle,
+                    taskDescription: taskDescription,
+                    workspaceId: taskWorkspace,
+                  )
+                  .then((val) => Navigator.pop(context));
+            },
             child: Text(
               'Done',
               style: TextStyle(color: Colors.orange),
@@ -75,19 +110,7 @@ class _AddTaskState extends State<AddTask> {
                 },
               ),
               SizedBox(height: 8.0),
-              DropdownButton<String>(
-                isExpanded: true,
-                hint: Text('Choose workspace'),
-                value: null,
-                items: <String>['Quak', 'Rubium Agency', 'Panther', 'D']
-                    .map((String value) {
-                  return DropdownMenuItem<String>(
-                    value: value,
-                    child: Text(value),
-                  );
-                }).toList(),
-                onChanged: (_) {},
-              ),
+              _buildWorkspacesDropDown(),
               SizedBox(height: 8.0),
               TextFormField(
                 onChanged: (String value) {

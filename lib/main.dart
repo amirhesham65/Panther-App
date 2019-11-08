@@ -1,11 +1,15 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:panther_app/models/user.dart';
 import 'package:panther_app/services/app_state.dart';
+import 'package:panther_app/services/auth.dart';
 import 'package:panther_app/views/HomeView.dart';
 import 'package:panther_app/views/LoadingView.dart';
 import 'package:panther_app/views/PersonalView.dart';
 import 'package:panther_app/views/SingleWorkspaceView.dart';
 import 'package:panther_app/views/WelcomeView.dart';
 import 'package:panther_app/views/WorkspacesView.dart';
+import 'package:provider/provider.dart';
 
 void main() => runApp(
       AppState(
@@ -17,25 +21,28 @@ void main() => runApp(
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      // Remove the debugModeBanner
-      debugShowCheckedModeBanner: false,
-      // Theme controlling
-      theme: ThemeData(
-        brightness: Brightness.light,
-        primarySwatch: Colors.orange,
-        accentColor: Colors.orange,
+    return StreamProvider<User>.value(
+      value: AuthService().user,
+      child: MaterialApp(
+        // Remove the debugModeBanner
+        debugShowCheckedModeBanner: false,
+        // Theme controlling
+        theme: ThemeData(
+          brightness: Brightness.dark,
+          primarySwatch: Colors.orange,
+          accentColor: Colors.orange,
+        ),
+        initialRoute: '/',
+        // Defining app routes
+        routes: {
+          '/': (context) => LoadingView(),
+          '/welcome': (context) => WelcomeView(),
+          '/home': (context) => HomeView(),
+          '/personal': (context) => PersonalView(),
+          '/workspaces': (context) => WorkspacesView(),
+          '/workspace': (context) => SingleWorkspaceView(),
+        },
       ),
-      initialRoute: '/',
-      // Defining app routes
-      routes: {
-        '/': (context) => LoadingView(),
-        '/welcome': (context) => WelcomeView(),
-        '/home': (context) => HomeView(),
-        '/personal': (context) => PersonalView(),
-        '/workspaces': (context) => WorkspacesView(),
-        '/workspace': (context) => SingleWorkspaceView(),
-      },
     );
   }
 }

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:panther_app/models/user.dart';
 import 'package:panther_app/services/auth.dart';
 import 'package:panther_app/components/GoogleSignInButton.dart';
 
@@ -12,14 +11,6 @@ class WelcomeView extends StatefulWidget {
 }
 
 class _WelcomeViewState extends State<WelcomeView> {
-  @override
-  void initState(){
-    super.initState();
-    auth.initGoogleAuthListner((User user) {
-      Navigator.pushReplacementNamed(context, '/home', arguments: user);
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,7 +29,9 @@ class _WelcomeViewState extends State<WelcomeView> {
                 style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
               ),
               SizedBox(height: 30.0),
-              GoogleSignInButton(onPressed: auth.handleSignIn),
+              GoogleSignInButton(onPressed: () => auth.handleSignInWithGoogle()),
+              SizedBox(height: 30.0),
+              RaisedButton(onPressed: () => auth.handleSignOutFromGoogle(), child: Text('Sign Out'),),
               SizedBox(height: 30.0),
               Container(
                 width: 300,

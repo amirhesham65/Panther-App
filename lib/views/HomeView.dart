@@ -94,7 +94,7 @@ class _HomeViewState extends State<HomeView> {
   Widget _buildTaskItem(BuildContext context, DocumentSnapshot snapshot) {
     final task = Task.fromSnapshot(snapshot);
     return HomeTaskCard(
-      projectName: 'Rubium Studio',
+      taskWorkspaceName: task.workspaceName,
       taskTitle: task.title,
       taskDescription: task.description,
     );

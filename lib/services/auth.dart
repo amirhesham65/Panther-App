@@ -1,39 +1,48 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:panther_app/models/user.dart';
 import 'package:panther_app/services/database.dart';
 
-// Defining the scope of data fetched from Google Authentication
-GoogleSignIn _googleSignIn = GoogleSignIn(scopes: <String>['email']);
-
 class AuthService {
-  // The data
-  User currentUser;
+  // Initializing GoogleSignIn and Firebase Auth 
+  final GoogleSignIn _googleSignIn = GoogleSignIn();
+  final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  // Initializing the user authentication listener
-  Future<void> initGoogleAuthListner(Function callBack) async {
-    // Listening to any SignIn/SignOut changes
-    _googleSignIn.onCurrentUserChanged.listen((GoogleSignInAccount googleSignInAccount) async {
-      currentUser = User.fromGoogleSignInAcccount(googleSignInAccount);
-      if(currentUser != null) {
-        callBack(await databaseService.createUser(currentUser));
-      }
-      // SigningIn with Google silently
-      await _googleSignIn.signInSilently();
-    });
+  // Getting the authenticated user
+  Stream<User> get user{
+    return _auth.onAuthStateChanged.map((user) => user != null ? User(id: user.uid) : null);
   }
 
-  // Handling SigningIn with Google
-  Future<void> handleSignIn() async {
-    try {
-      await _googleSignIn.signIn();
-    } catch (error) {
-      print(error);
-    }
+  // Handling SigningIn with google
+  Future<User> handleSignInWithGoogle() async {
+    // SigningIn with Google and initializing the authentication
+    final GoogleSignInAccount googleSignInAccount = await _googleSignIn.signIn();
+    final GoogleSignInAuthentication googleSignInAuthentication = await googleSignInAccount.authentication;
+
+    // Getting and passing credentials with GoogleAuthProvider
+    final AuthCredential credential = GoogleAuthProvider.getCredential(
+      accessToken: googleSignInAuthentication.accessToken,
+      idToken: googleSignInAuthentication.idToken
+    );
+
+    // SigningIn with the credentials  
+    FirebaseUser user = (await _auth.signInWithCredential(credential)).user;
+
+    // Setting the user data into the Firestore
+    await databaseService.createUser(User.fromFirebaseUserInstance(user));
+
+    // Returnning the user
+    return User.fromFirebaseUserInstance(user);
   }
 
   // Handling SigningOut from Google
-  Future<void> handleSignOut() async {
-    await _googleSignIn.disconnect();
-    print('Disconnected!');
+  Future<void> handleSignOutFromGoogle() async {
+    try {
+      await _googleSignIn.signOut();
+      await _auth.signOut();
+      print('Signed out!');
+    } catch (error) {
+      print(error);
+    }
   }
 }
