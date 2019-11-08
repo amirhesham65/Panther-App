@@ -5,7 +5,6 @@ import 'package:page_transition/page_transition.dart';
 import 'package:panther_app/components/HomeTaskCard.dart';
 import 'package:panther_app/components/drawer.dart';
 import 'package:panther_app/models/task.dart';
-import 'package:panther_app/models/user.dart';
 import 'package:panther_app/services/app_state.dart';
 import 'package:panther_app/views/AddTask.dart';
 
@@ -35,13 +34,12 @@ class _HomeViewState extends State<HomeView> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Opacity(
-              opacity: 0.8,
+              opacity: 0.7,
               child: Image(
-                image: AssetImage('assets/images/ill1.png'),
-                width: 200,
+                image: AssetImage('assets/images/no_tasks.png'),
+                width: 300,
               ),
             ),
-            SizedBox(height: 32.0),
             Text(
               'What do you want to accomplish today?',
               style: TextStyle(color: Colors.grey, fontSize: 14.0),
