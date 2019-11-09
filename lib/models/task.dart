@@ -6,6 +6,7 @@ class Task {
   String workspaceId;
   String workspaceName;
   bool isCompleted;
+  DateTime schedule;
 
   // The document reference will be set to snapshot reference
   DocumentReference reference;

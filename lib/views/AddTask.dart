@@ -4,9 +4,9 @@ import 'package:panther_app/models/user.dart';
 import 'package:panther_app/models/workspace.dart';
 import 'package:panther_app/services/database.dart';
 import 'package:provider/provider.dart';
+import 'package:intl/intl.dart';
 
 class AddTask extends StatefulWidget {
-
   final String currentWorkspaceId;
 
   AddTask({this.currentWorkspaceId});
@@ -23,17 +23,36 @@ class _AddTaskState extends State<AddTask> {
   String taskTitle;
   String taskDescription;
   String taskWorkspaceId;
+  DateTime schedule = DateTime.now();
+
+  // Setting up the material date picker for task schedule
+  Future<Null> _selectDate(BuildContext context) async {
+    final DateTime pickedDate = await showDatePicker(
+      context: context,
+      initialDate: schedule,
+      firstDate: DateTime(2015, 8),
+      lastDate: DateTime(2101),
+    );
+    if (pickedDate != null && pickedDate != schedule) {
+      setState(() {
+        schedule = pickedDate;
+      });
+    }
+  }
 
   @override
   void initState() {
     super.initState();
+    // Accepting an id to indicate if the AddTask was called from a workspace view
     taskWorkspaceId = widget.currentWorkspaceId;
   }
 
   @override
   Widget build(BuildContext context) {
+    // Getting the current user from the provider
     final User currentUser = Provider.of<User>(context);
 
+    // Build the workspace choosing dropdown menu widget
     Widget _buildDropDown(
         BuildContext context, List<DocumentSnapshot> snapshots) {
       List<Workspace> workspaces = snapshots
@@ -57,6 +76,7 @@ class _AddTaskState extends State<AddTask> {
       );
     }
 
+    // Build the workspace choosing dropdown menu stream
     Widget _buildWorkspacesDropDown() {
       return StreamBuilder<QuerySnapshot>(
         stream: databaseService.getUsersWorkspaces(currentUser),
@@ -143,7 +163,10 @@ class _AddTaskState extends State<AddTask> {
               ),
               SizedBox(height: 16.0),
               Container(
-                decoration: BoxDecoration(border: Border.all(color: Colors.grey[200], )),
+                decoration: BoxDecoration(
+                    border: Border.all(
+                  color: Colors.grey.withOpacity(0.3),
+                )),
                 child: ListTile(
                   leading: Icon(Icons.person),
                   title: Text('Assigned to'),
@@ -152,23 +175,29 @@ class _AddTaskState extends State<AddTask> {
               ),
               SizedBox(height: 8.0),
               Container(
-                decoration: BoxDecoration(border: Border.all(color: Colors.grey[200], )),
+                decoration: BoxDecoration(
+                    border: Border.all(
+                  color: Colors.grey.withOpacity(0.3),
+                )),
                 child: ListTile(
+                  onTap: () => _selectDate(context),
                   leading: Icon(Icons.calendar_today),
                   title: Text('Schedule'),
-                  subtitle: Text('Sat, 10/12/19'),
+                  subtitle: Text(DateFormat('EE dd MMM yyyy').format(schedule)),
                 ),
               ),
               SizedBox(height: 8.0),
               Container(
-                decoration: BoxDecoration(border: Border.all(color: Colors.grey[200], )),
+                decoration: BoxDecoration(
+                    border: Border.all(
+                  color: Colors.grey.withOpacity(0.3),
+                )),
                 child: ListTile(
                   leading: Icon(Icons.location_on),
                   title: Text('Remind on a location'),
                   subtitle: Text('Amir Hesham\'s Home'),
                 ),
               ),
-              
             ],
           ),
         ),
