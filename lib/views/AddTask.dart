@@ -6,6 +6,11 @@ import 'package:panther_app/services/database.dart';
 import 'package:provider/provider.dart';
 
 class AddTask extends StatefulWidget {
+
+  String currentWorkspaceId;
+
+  AddTask({this.currentWorkspaceId});
+
   @override
   _AddTaskState createState() => _AddTaskState();
 }
@@ -17,7 +22,13 @@ class _AddTaskState extends State<AddTask> {
   // Holding the state
   String taskTitle;
   String taskDescription;
-  String taskWorkspace;
+  String taskWorkspaceId;
+
+  @override
+  void initState() {
+    super.initState();
+    taskWorkspaceId = widget.currentWorkspaceId;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,10 +42,10 @@ class _AddTaskState extends State<AddTask> {
       return DropdownButton<String>(
         isExpanded: true,
         hint: Text('Choose a workspace'),
-        value: taskWorkspace,
+        value: taskWorkspaceId,
         onChanged: (val) {
           setState(() {
-            taskWorkspace = val;
+            taskWorkspaceId = val;
           });
         },
         items: workspaces.map((Workspace workspace) {
@@ -75,7 +86,7 @@ class _AddTaskState extends State<AddTask> {
                   .createTask(
                     taskTitle: taskTitle,
                     taskDescription: taskDescription,
-                    workspaceId: taskWorkspace,
+                    workspaceId: taskWorkspaceId,
                   )
                   .then((val) => Navigator.pop(context));
             },

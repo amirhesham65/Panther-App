@@ -1,9 +1,23 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:panther_app/components/SegmentsOfControl.dart';
 import 'package:panther_app/components/WorkspaceTaskCard.dart';
 import 'package:panther_app/models/task.dart';
 import 'package:panther_app/models/workspace.dart';
+import 'package:panther_app/views/AddTask.dart';
+
+
+// Showing Add Task View
+void showAddTaskView(BuildContext context, String curentWorkspaceId) {
+  Navigator.push(
+    context,
+    PageTransition(
+      type: PageTransitionType.downToUp,
+      child: AddTask(currentWorkspaceId: curentWorkspaceId),
+    ),
+  );
+}
 
 // Single Workspace view that shows tasks, chat and statistics
 class SingleWorkspaceView extends StatefulWidget {
@@ -54,7 +68,7 @@ class _SingleWorkspaceViewState extends State<SingleWorkspaceView> {
     final Workspace workspace = ModalRoute.of(context).settings.arguments;
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () => showAddTaskView(context, workspace.reference.documentID),
         child: Icon(
           Icons.add,
           color: Colors.white,
