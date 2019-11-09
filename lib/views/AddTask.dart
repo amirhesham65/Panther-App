@@ -7,7 +7,7 @@ import 'package:provider/provider.dart';
 
 class AddTask extends StatefulWidget {
 
-  String currentWorkspaceId;
+  final String currentWorkspaceId;
 
   AddTask({this.currentWorkspaceId});
 
@@ -141,6 +141,34 @@ class _AddTaskState extends State<AddTask> {
                   return null;
                 },
               ),
+              SizedBox(height: 16.0),
+              Container(
+                decoration: BoxDecoration(border: Border.all(color: Colors.grey[200], )),
+                child: ListTile(
+                  leading: Icon(Icons.person),
+                  title: Text('Assigned to'),
+                  subtitle: Text('Amir Hesham'),
+                ),
+              ),
+              SizedBox(height: 8.0),
+              Container(
+                decoration: BoxDecoration(border: Border.all(color: Colors.grey[200], )),
+                child: ListTile(
+                  leading: Icon(Icons.calendar_today),
+                  title: Text('Schedule'),
+                  subtitle: Text('Sat, 10/12/19'),
+                ),
+              ),
+              SizedBox(height: 8.0),
+              Container(
+                decoration: BoxDecoration(border: Border.all(color: Colors.grey[200], )),
+                child: ListTile(
+                  leading: Icon(Icons.location_on),
+                  title: Text('Remind on a location'),
+                  subtitle: Text('Amir Hesham\'s Home'),
+                ),
+              ),
+              
             ],
           ),
         ),
