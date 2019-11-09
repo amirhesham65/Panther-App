@@ -10,12 +10,13 @@ class HomeTaskCard extends StatefulWidget {
   final String taskWorkspaceName;
   final bool taskIsCompleted;
 
-  HomeTaskCard(
-      {this.taskId,
-      this.taskTitle,
-      this.taskDescription,
-      this.taskWorkspaceName,
-      this.taskIsCompleted});
+  HomeTaskCard({
+    this.taskId,
+    this.taskTitle,
+    this.taskDescription,
+    this.taskWorkspaceName,
+    this.taskIsCompleted,
+  });
 
   @override
   _HomeTaskCardState createState() => _HomeTaskCardState();

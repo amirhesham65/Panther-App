@@ -58,8 +58,11 @@ class _SingleWorkspaceViewState extends State<SingleWorkspaceView> {
     final task = Task.fromSnapshot(snapshot);
     return WorkspaceTaskCard(
       taskStatus: 'Overdue',
+      taskId: task.reference.documentID,
+      taskWorkspaceName: task.workspaceName,
       taskTitle: task.title,
       taskDescription: task.description,
+      taskIsCompleted: task.isCompleted,
     );
   }
   @override
