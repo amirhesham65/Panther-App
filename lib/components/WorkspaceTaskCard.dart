@@ -50,7 +50,7 @@ class _WorkspaceTaskCardState extends State<WorkspaceTaskCard> {
         // To be extracted later
         child: Opacity(
           opacity: (widget.taskIsCompleted) ? 0.6 : 1,
-                  child: Card(
+          child: Card(
             child: Padding(
               padding: const EdgeInsets.symmetric(
                 horizontal: 20.0,
@@ -69,16 +69,20 @@ class _WorkspaceTaskCardState extends State<WorkspaceTaskCard> {
                     ),
                   ),
                   SizedBox(height: 10.0),
-                  Text(
-                    widget.taskTitle,
-                    style: TextStyle(
-                      fontSize: 20.0,
-                      fontWeight: FontWeight.bold,
+                  Opacity(
+                    opacity: 0.9,
+                    child: Text(
+                      widget.taskTitle,
+                      style: TextStyle(
+                        fontSize: 20.0,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
                   (widget.taskDescription != null)
                       ? Padding(
-                          padding: const EdgeInsets.fromLTRB(0.0, 8.0, 0.0, 0.0),
+                          padding:
+                              const EdgeInsets.fromLTRB(0.0, 8.0, 0.0, 0.0),
                           child: Text(
                             widget.taskDescription,
                             style: TextStyle(
