@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:panther_app/models/user.dart';
 import 'package:panther_app/services/app_state.dart';
