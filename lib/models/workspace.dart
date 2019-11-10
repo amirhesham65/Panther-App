@@ -3,6 +3,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class Workspace {
   String name;
   String description;
+  List users;
+  
   // The document reference will be set to snapshot reference
   DocumentReference reference;
 
@@ -10,7 +12,8 @@ class Workspace {
   Workspace.fromMap(Map<String, dynamic> map, {this.reference})
       : assert(map['name'] != null),
         name = map['name'],
-        description = map['description'];
+        description = map['description'],
+        users = map['users'];
 
   // Formatting the snapshot data
   Workspace.fromSnapshot(DocumentSnapshot snapshot) : this.fromMap(snapshot.data, reference: snapshot.reference);

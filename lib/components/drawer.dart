@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:panther_app/views/WelcomeView.dart';
 
 // The app side drawer
 class AppDrawer extends StatelessWidget {
@@ -36,6 +37,13 @@ class AppDrawer extends StatelessWidget {
             ListTile(
               title: Text('Settings'),
               trailing: Icon(Icons.settings),
+            ),
+            ListTile(
+              title: Text('SignOut'),
+              trailing: Icon(Icons.settings),
+              onTap: () {
+                auth.handleSignOutFromGoogle();
+              },
             ),
             ListTile(
               title: Text('Dark Mode'),

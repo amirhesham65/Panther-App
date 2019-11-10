@@ -29,9 +29,6 @@ void showAddTaskView(BuildContext context) {
 }
 
 class _HomeViewState extends State<HomeView> {
-
-  
-
   // Placeholder to display when there is no data (tasks)
   Widget _todayTasksPlaceHolder() {
     return Container(
@@ -66,9 +63,10 @@ class _HomeViewState extends State<HomeView> {
   }
 
   // Getting data from Firebase Firestore
-  Widget _buildListBody(BuildContext context) {
+  Widget _buildListBody(BuildContext context, User user) {
+    print(user.id);
     return StreamBuilder<QuerySnapshot>(
-      stream: Firestore.instance.collection('tasks').snapshots(),
+      stream: databaseService.getUsersTasks(user),
       // The stream gets the data and the builder process that data
       builder: (context, snapshots) {
         // Check if the snapshot has data
@@ -177,7 +175,7 @@ class _HomeViewState extends State<HomeView> {
                 height: 8.0,
               ),
               // Listing all today's tasks
-              Expanded(child: _buildListBody(context)),
+              Expanded(child: _buildListBody(context, user)),
             ],
           ),
         ),

@@ -34,7 +34,11 @@ class DatabaseService {
 
   // Adding a new task to the Cloud FireStore
   Future<void> createTask(
-      {String taskTitle, String taskDescription, String workspaceId, DateTime schedule}) async {
+      {User user,
+      String taskTitle,
+      String taskDescription,
+      String workspaceId,
+      DateTime schedule}) async {
     assert(taskTitle != null);
     await Firestore.instance.collection('tasks').document().setData({
       'workspaceId': workspaceId,
@@ -42,7 +46,8 @@ class DatabaseService {
       'title': taskTitle,
       'description': taskDescription,
       'isCompleted': false,
-      'schedule': schedule
+      'schedule': schedule,
+      'userAssignedId': user.id
     });
   }
 
@@ -51,6 +56,14 @@ class DatabaseService {
     return Firestore.instance
         .collection('workspaces')
         .where('users', arrayContains: currentUser.id)
+        .snapshots();
+  }
+
+  // Streaming the user's tasks
+  Stream<QuerySnapshot> getUsersTasks(User currentUser) {
+    return Firestore.instance
+        .collection('tasks')
+        .where('userAssignedId', isEqualTo: currentUser.id)
         .snapshots();
   }
 
@@ -84,8 +97,6 @@ class DatabaseService {
         .document(taskId)
         .updateData({'isCompleted': !isCompleted});
   }
-
-  
 }
 
 DatabaseService databaseService = DatabaseService();

@@ -104,6 +104,7 @@ class _AddTaskState extends State<AddTask> {
             onPressed: () {
               databaseService
                   .createTask(
+                    user: Provider.of<User>(context),
                     taskTitle: taskTitle,
                     taskDescription: taskDescription,
                     workspaceId: taskWorkspaceId,
