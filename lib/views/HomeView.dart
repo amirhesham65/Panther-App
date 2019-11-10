@@ -5,8 +5,11 @@ import 'package:page_transition/page_transition.dart';
 import 'package:panther_app/components/HomeTaskCard.dart';
 import 'package:panther_app/components/drawer.dart';
 import 'package:panther_app/models/task.dart';
+import 'package:panther_app/models/user.dart';
 import 'package:panther_app/services/app_state.dart';
+import 'package:panther_app/services/database.dart';
 import 'package:panther_app/views/AddTask.dart';
+import 'package:provider/provider.dart';
 
 // The home (Today) view widget
 class HomeView extends StatefulWidget {
@@ -26,6 +29,9 @@ void showAddTaskView(BuildContext context) {
 }
 
 class _HomeViewState extends State<HomeView> {
+
+  
+
   // Placeholder to display when there is no data (tasks)
   Widget _todayTasksPlaceHolder() {
     return Container(
@@ -103,13 +109,17 @@ class _HomeViewState extends State<HomeView> {
   @override
   Widget build(BuildContext context) {
     if (ModalRoute.of(context).settings.arguments != null) {
-      AppState.of(context)
-          .setUserState(ModalRoute.of(context).settings.arguments);
+      AppState.of(context).setUserState(ModalRoute.of(context).settings.arguments);
     }
-    // User user = AppState.of(context).currentUser;
+    
+    // Today's date initialization
+    final DateTime now = DateTime.now();
+    // Getting the current user from the Provider
+    final User user = Provider.of<User>(context);
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: () => showAddTaskView(context),
+        
         child: Icon(
           Icons.add,
           color: Colors.white,

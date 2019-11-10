@@ -107,6 +107,7 @@ class _AddTaskState extends State<AddTask> {
                     taskTitle: taskTitle,
                     taskDescription: taskDescription,
                     workspaceId: taskWorkspaceId,
+                    schedule: schedule
                   )
                   .then((val) => Navigator.pop(context));
             },
