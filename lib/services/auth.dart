@@ -10,7 +10,7 @@ class AuthService {
 
   // Getting the authenticated user
   Stream<User> get user{
-    return _auth.onAuthStateChanged.map((user) => user != null ? User(id: user.uid) : null);
+    return _auth.onAuthStateChanged.map((user) => user != null ? User(id: user.uid, displayName: user.displayName, email: user.email, photoUrl: user.photoUrl) : null);
   }
 
   // Handling SigningIn with google

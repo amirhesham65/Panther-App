@@ -64,7 +64,6 @@ class _HomeViewState extends State<HomeView> {
 
   // Getting data from Firebase Firestore
   Widget _buildListBody(BuildContext context, User user) {
-    print(user.id);
     return StreamBuilder<QuerySnapshot>(
       stream: databaseService.getUsersTasks(user),
       // The stream gets the data and the builder process that data
@@ -106,18 +105,14 @@ class _HomeViewState extends State<HomeView> {
 
   @override
   Widget build(BuildContext context) {
-    if (ModalRoute.of(context).settings.arguments != null) {
-      AppState.of(context).setUserState(ModalRoute.of(context).settings.arguments);
-    }
-    
     // Today's date initialization
     final DateTime now = DateTime.now();
     // Getting the current user from the Provider
-    final User user = Provider.of<User>(context);
+    User user = Provider.of<User>(context);
+
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: () => showAddTaskView(context),
-        
         child: Icon(
           Icons.add,
           color: Colors.white,
@@ -131,7 +126,11 @@ class _HomeViewState extends State<HomeView> {
           Padding(
             padding: const EdgeInsets.fromLTRB(0.0, 0.0, 12.0, 0.0),
             child: CircleAvatar(
-              child: Text('A'),
+              child: (user.photoUrl != null)
+                  ? ClipOval(
+                      child: Image.network(user.photoUrl),
+                    )
+                  : Text(user.displayName[0]),
             ),
           ),
         ],

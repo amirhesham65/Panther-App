@@ -6,7 +6,7 @@ class User {
   String email;
   String photoUrl;
 
-  User({this.id});
+  User({this.id, this.displayName, this.email, this.photoUrl});
 
   // Serializing a user object from Google into custom user object
   User.fromFirebaseUserInstance(FirebaseUser firebaseUser) {
