@@ -47,6 +47,36 @@ class _AddTaskState extends State<AddTask> {
     taskWorkspaceId = widget.currentWorkspaceId;
   }
 
+  // Show the user assignment
+  Future<void> _openUserAssignment() async {
+    List users = await databaseService.getWorkspaceUsers(taskWorkspaceId);
+    
+  return showDialog<void>(
+    context: context,
+    barrierDismissible: false, // user must tap button!
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: Text('Choose a person'),
+        content: SingleChildScrollView(
+          child: ListBody(
+            children: <Widget>[
+              Text('Hello, buds!')
+            ]
+          ),
+        ),
+        actions: <Widget>[
+          FlatButton(
+            child: Text('Cancel'),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+        ],
+      );
+    },
+  );
+}
+
   @override
   Widget build(BuildContext context) {
     // Getting the current user from the provider
@@ -62,7 +92,7 @@ class _AddTaskState extends State<AddTask> {
         isExpanded: true,
         hint: Text('Choose a workspace'),
         value: taskWorkspaceId,
-        onChanged: (val) {
+        onChanged: (val) async {
           setState(() {
             taskWorkspaceId = val;
           });
@@ -170,6 +200,7 @@ class _AddTaskState extends State<AddTask> {
                   color: Colors.grey.withOpacity(0.3),
                 )),
                 child: ListTile(
+                  onTap: () async => await _openUserAssignment(),
                   leading: Icon(Icons.person),
                   title: Text('Assigned to'),
                   subtitle: Text('Amir Hesham'),

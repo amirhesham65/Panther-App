@@ -1,16 +1,27 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:panther_app/models/user.dart';
+import 'package:panther_app/models/workspace.dart';
 
 class DatabaseService {
   // Adding a user to the DB directly
   Future<User> _addUserToDatabase(User currentUser) async {
-    await Firestore.instance.collection('users').document().setData({
+    await Firestore.instance
+        .collection('users')
+        .document(currentUser.id)
+        .setData({
       'id': currentUser.id,
       'displayName': currentUser.displayName,
       'email': currentUser.email,
       'photoUrl': currentUser.photoUrl
     });
     return currentUser;
+  }
+
+  // Getting a certain user by its Id
+  dynamic getUserById(String userId) async {
+    DocumentSnapshot userSnapshot = await Firestore.instance.collection('users').document(userId).get();
+    return userSnapshot.data;
+        
   }
 
   // Creating the user [MAIN]
@@ -65,6 +76,15 @@ class DatabaseService {
         .collection('tasks')
         .where('userAssignedId', isEqualTo: currentUser.id)
         .snapshots();
+  }
+
+  // Streaming the user's tasks
+  Future<List> getWorkspaceUsers(String workspaceId) async {
+    DocumentSnapshot workspace = await Firestore.instance.collection('workspaces').document(workspaceId).get();
+    List users = workspace.data['users'];
+    return users.map((userId) {
+      return getUserById(userId);
+    }).toList();
   }
 
   // Returnning workspace data by id
