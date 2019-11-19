@@ -21,7 +21,7 @@ class _WelcomeViewState extends State<WelcomeView> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Text(
-                'Welcome to Panther',
+                'Welcome to Mismo',
                 style: TextStyle(fontSize: 14.0, color: Colors.grey),
               ),
               Text(
@@ -31,14 +31,12 @@ class _WelcomeViewState extends State<WelcomeView> {
               SizedBox(height: 30.0),
               GoogleSignInButton(onPressed: () => auth.handleSignInWithGoogle()),
               SizedBox(height: 30.0),
-              RaisedButton(onPressed: () => auth.handleSignOutFromGoogle(), child: Text('Sign Out'),),
-              SizedBox(height: 30.0),
               Container(
-                width: 300,
+                width: 200,
                 child: Text(
                   'By continuing, you agree to Panther\'s Terms of Service, Privacy Policy.',
                   textAlign: TextAlign.center,
-                  style: TextStyle(color: Colors.grey[500]),
+                  style: TextStyle(color: Colors.grey[500], fontSize: 10.0, letterSpacing: 0.2),
                 ),
               ),
             ],

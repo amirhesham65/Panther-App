@@ -98,7 +98,7 @@ class _SingleWorkspaceViewState extends State<SingleWorkspaceView> {
       ),
       body: SafeArea(
         child: Container(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(4.0),
           child: Column(
             children: <Widget>[
               Center(

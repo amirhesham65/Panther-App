@@ -64,21 +64,19 @@ class _WorkspaceTaskCardState extends State<WorkspaceTaskCard> {
                     widget.taskStatus,
                     style: TextStyle(
                       fontSize: 12.0,
-                      fontWeight: FontWeight.bold,
+                      fontWeight: FontWeight.w600,
                       color: taskStatusColor(widget.taskStatus),
                     ),
                   ),
                   SizedBox(height: 10.0),
-                  Opacity(
-                    opacity: 0.9,
-                    child: Text(
+                  Text(
                       widget.taskTitle,
                       style: TextStyle(
-                        fontSize: 20.0,
-                        fontWeight: FontWeight.bold,
+                        fontSize: 18.0,
+                        fontWeight: FontWeight.w700,
+                        letterSpacing: 0.3
                       ),
                     ),
-                  ),
                   (widget.taskDescription != null)
                       ? Padding(
                           padding:
@@ -86,7 +84,7 @@ class _WorkspaceTaskCardState extends State<WorkspaceTaskCard> {
                           child: Text(
                             widget.taskDescription,
                             style: TextStyle(
-                              fontSize: 12.0,
+                              fontSize: 13.0,
                               color: Theme.of(context)
                                   .primaryTextTheme
                                   .caption

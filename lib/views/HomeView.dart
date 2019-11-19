@@ -119,16 +119,17 @@ class _HomeViewState extends State<HomeView> {
         ),
       ),
       appBar: AppBar(
-        title: Text('Home'),
-        elevation: 0.5,
+        title: Text('Mismo'),
+        elevation: 0.7,
         backgroundColor: Theme.of(context).canvasColor,
         actions: <Widget>[
           Padding(
             padding: const EdgeInsets.fromLTRB(0.0, 0.0, 12.0, 0.0),
             child: CircleAvatar(
+              backgroundColor: Theme.of(context).accentColor.withOpacity(0.6),
               child: (user.photoUrl != null)
                   ? ClipOval(
-                      child: Image.network(user.photoUrl),
+                      child: Image.network(user.photoUrl, width: 35.0,),
                     )
                   : Text(user.displayName[0]),
             ),
@@ -138,40 +139,35 @@ class _HomeViewState extends State<HomeView> {
       drawer: AppDrawer(),
       body: SafeArea(
         child: Container(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(4.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 10.0,
-                    vertical: 8.0,
-                  ),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: <Widget>[
-                      Text(
-                        'Today',
-                        style: TextStyle(
-                          fontSize: 18.0,
-                          fontWeight: FontWeight.bold,
-                        ),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10.0,
+                  vertical: 12.0,
+                ),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: <Widget>[
+                    Text(
+                      'Today',
+                      style: TextStyle(
+                        fontSize: 18.0,
+                        fontWeight: FontWeight.w600,
                       ),
-                      SizedBox(
-                        width: 7.0,
+                    ),
+                    SizedBox(width: 7.0),
+                    Text(
+                      'Thu Sep 12',
+                      style: TextStyle(
+                        fontSize: 12.0,
+                        color: Colors.grey,
                       ),
-                      Text(
-                        'Thu Sep 12',
-                        style: TextStyle(
-                          fontSize: 12.0,
-                          fontWeight: FontWeight.w100,
-                          color: Colors.grey,
-                        ),
-                      ),
-                    ],
-                  )),
-              SizedBox(
-                height: 8.0,
+                    ),
+                  ],
+                ),
               ),
               // Listing all today's tasks
               Expanded(child: _buildListBody(context, user)),
