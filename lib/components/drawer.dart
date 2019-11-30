@@ -1,38 +1,42 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:panther_app/models/user.dart';
 import 'package:panther_app/views/WelcomeView.dart';
+import 'package:provider/provider.dart';
 
 // The app side drawer
 class AppDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    // Getting the current user from the Provider
+    User user = Provider.of<User>(context);
+
     return Drawer(
       child: Container(
         child: ListView(
           children: <Widget>[
             UserAccountsDrawerHeader(
-              accountName: Text('Amir Hesham'),
-              accountEmail: Text('amirhesham65@gmail.com'),
+              accountName: Text(user.displayName),
+              accountEmail: Text(user.email),
               currentAccountPicture: CircleAvatar(
-                child: Text('A'),
+                backgroundColor: Theme.of(context).accentColor.withOpacity(0.6),
+                child: (user.photoUrl != null)
+                    ? ClipOval(child: Image.network(user.photoUrl))
+                    : Text(user.displayName[0]),
               ),
             ),
             ListTile(
               title: Text('Today'),
-              subtitle: Text('3 tasks due'),
               trailing: Icon(Icons.today),
             ),
             ListTile(
-              title: Text('Workspaces'),
-              subtitle: Text('12 new updates'),
-              trailing: Icon(Icons.view_carousel),
-              onTap: () => Navigator.pushNamed(context, '/workspaces')
-            ),
+                title: Text('Workspaces'),
+                trailing: Icon(Icons.view_carousel),
+                onTap: () => Navigator.pushNamed(context, '/workspaces')),
             ListTile(
-              title: Text('Personal'),
-              trailing: Icon(Icons.person),
-              onTap: () => Navigator.pushNamed(context, '/personal')
-            ),
+                title: Text('Personal'),
+                trailing: Icon(Icons.person),
+                onTap: () => Navigator.pushNamed(context, '/personal')),
             Divider(),
             ListTile(
               title: Text('Settings'),

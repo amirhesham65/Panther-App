@@ -105,8 +105,6 @@ class _HomeViewState extends State<HomeView> {
 
   @override
   Widget build(BuildContext context) {
-    // Today's date initialization
-    final DateTime now = DateTime.now();
     // Getting the current user from the Provider
     User user = Provider.of<User>(context);
 
