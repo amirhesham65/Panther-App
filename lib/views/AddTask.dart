@@ -23,6 +23,8 @@ class _AddTaskState extends State<AddTask> {
   String taskTitle;
   String taskDescription;
   String taskWorkspaceId;
+  String taskAssignedUserId;
+  String taskAssignedUserName;
   DateTime schedule = DateTime.now();
 
   // Setting up the material date picker for task schedule
@@ -47,41 +49,87 @@ class _AddTaskState extends State<AddTask> {
     taskWorkspaceId = widget.currentWorkspaceId;
   }
 
+  // Setting the assigned user Id to the state
+  void setAssignedUser(user) {
+    setState(() {
+      taskAssignedUserId = user['id'];
+      taskAssignedUserName = user['displayName'];
+    });
+  }
+
   // Show the user assignment
   Future<void> _openUserAssignment() async {
-    List users = await databaseService.getWorkspaceUsers(taskWorkspaceId);
-    
-  return showDialog<void>(
-    context: context,
-    barrierDismissible: false, // user must tap button!
-    builder: (BuildContext context) {
-      return AlertDialog(
-        title: Text('Choose a person'),
-        content: SingleChildScrollView(
-          child: ListBody(
-            children: <Widget>[
-              Text('Hello, buds!')
-            ]
-          ),
+    // Building each task list item
+    Widget _buildUserItem(BuildContext context, DocumentSnapshot snapshot, Function closeDialog) {
+      Map user = snapshot.data;
+      return ListTile(
+        onTap: () {
+          setAssignedUser(user);
+          closeDialog();
+        },
+        title: Text(user['displayName']),
+        leading: CircleAvatar(
+          backgroundColor: Theme.of(context).accentColor.withOpacity(0.6),
+          child: (user['photoUrl'] != null)
+              ? ClipOval(
+                  child: Image.network(
+                    user['photoUrl'],
+                    width: 35.0,
+                  ),
+                )
+              : Text(user['displayName'][0]),
         ),
-        actions: <Widget>[
-          FlatButton(
-            child: Text('Cancel'),
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-          ),
-        ],
+        trailing: Icon(Icons.check),
       );
-    },
-  );
-}
+    }
+
+    // Building the actual task list
+    Widget _buildUserList(
+        BuildContext context, List<DocumentSnapshot> snapshots, Function closeDialog) {
+      return ListBody(
+        // Iterating over the snapshots
+        children: snapshots
+            .map((snapshot) => _buildUserItem(context, snapshot, closeDialog))
+            .toList(),
+      );
+    }
+
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        void closeDialog() => Navigator.pop(context);
+        return AlertDialog(
+          contentPadding: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 10.0),
+          title: Text('Choose a person'),
+          content: SingleChildScrollView(
+              child: StreamBuilder<QuerySnapshot>(
+            stream: databaseService.getWorkspaceUsers(taskWorkspaceId),
+            builder: (context, snapshots) {
+              // Check if the snapshot has data
+              if (!snapshots.hasData) return LinearProgressIndicator();
+              // Build the actual task list
+              return _buildUserList(context, snapshots.data.documents, closeDialog);
+            },
+          )),
+          actions: <Widget>[
+            FlatButton(
+              child: Text('Cancel'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     // Getting the current user from the provider
     final User currentUser = Provider.of<User>(context);
-
+    
     // Build the workspace choosing dropdown menu widget
     Widget _buildDropDown(
         BuildContext context, List<DocumentSnapshot> snapshots) {
@@ -96,6 +144,7 @@ class _AddTaskState extends State<AddTask> {
           setState(() {
             taskWorkspaceId = val;
           });
+          print(taskWorkspaceId);
         },
         items: workspaces.map((Workspace workspace) {
           return DropdownMenuItem<String>(
@@ -134,12 +183,12 @@ class _AddTaskState extends State<AddTask> {
             onPressed: () {
               databaseService
                   .createTask(
-                    user: Provider.of<User>(context),
-                    taskTitle: taskTitle,
-                    taskDescription: taskDescription,
-                    workspaceId: taskWorkspaceId,
-                    schedule: schedule
-                  )
+                      user: Provider.of<User>(context),
+                      taskTitle: taskTitle,
+                      taskDescription: taskDescription,
+                      workspaceId: taskWorkspaceId,
+                      schedule: schedule,
+                      assignedUserId: taskAssignedUserId)
                   .then((val) => Navigator.pop(context));
             },
             child: Text(
@@ -203,7 +252,7 @@ class _AddTaskState extends State<AddTask> {
                   onTap: () async => await _openUserAssignment(),
                   leading: Icon(Icons.person),
                   title: Text('Assigned to'),
-                  subtitle: Text('Amir Hesham'),
+                  subtitle: Text(taskAssignedUserName ?? ""),
                 ),
               ),
               SizedBox(height: 8.0),

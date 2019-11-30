@@ -19,9 +19,9 @@ class DatabaseService {
 
   // Getting a certain user by its Id
   dynamic getUserById(String userId) async {
-    DocumentSnapshot userSnapshot = await Firestore.instance.collection('users').document(userId).get();
+    DocumentSnapshot userSnapshot =
+        await Firestore.instance.collection('users').document(userId).get();
     return userSnapshot.data;
-        
   }
 
   // Creating the user [MAIN]
@@ -49,7 +49,8 @@ class DatabaseService {
       String taskTitle,
       String taskDescription,
       String workspaceId,
-      DateTime schedule}) async {
+      DateTime schedule,
+      String assignedUserId}) async {
     assert(taskTitle != null);
     await Firestore.instance.collection('tasks').document().setData({
       'workspaceId': workspaceId,
@@ -58,7 +59,7 @@ class DatabaseService {
       'description': taskDescription,
       'isCompleted': false,
       'schedule': schedule,
-      'userAssignedId': user.id
+      'userAssignedId': assignedUserId
     });
   }
 
@@ -78,13 +79,12 @@ class DatabaseService {
         .snapshots();
   }
 
-  // Streaming the user's tasks
-  Future<List> getWorkspaceUsers(String workspaceId) async {
-    DocumentSnapshot workspace = await Firestore.instance.collection('workspaces').document(workspaceId).get();
-    List users = workspace.data['users'];
-    return users.map((userId) {
-      return getUserById(userId);
-    }).toList();
+  // Getting the users in the workspace
+  Stream<QuerySnapshot> getWorkspaceUsers(String workspaceId) {
+    return Firestore.instance
+        .collection('users')
+        .where('workspaces', arrayContains: workspaceId)
+        .snapshots();
   }
 
   // Returnning workspace data by id
@@ -94,20 +94,41 @@ class DatabaseService {
     return snapshot.data;
   }
 
-  // Adding workspace to the user
+  // Add user to the workspace
+  Future<void> addUserToWorkspace(
+      {User currentUser, String workspaceId}) async {
+    DocumentReference workspaceReference =
+        Firestore.instance.collection('workspaces').document(workspaceId);
+    workspaceReference
+        .collection('workspaceUsers')
+        .add({'date': new DateTime.now(), 'userId': currentUser.id});
+  }
+
+  // Add workspace to user
+  Future<void> addWorkspaceToUser(
+      {User currentUser, String workspaceId}) async {
+    DocumentReference userReference =
+        Firestore.instance.collection('users').document(currentUser.id);
+    userReference.updateData({
+      'workspaces': FieldValue.arrayUnion([workspaceId])
+    });
+  }
+
+  // Creating a new workspace
   Future<void> createWorkspace(
       {User currentUser,
       String workspaceName,
       String workspaceDescription}) async {
     assert(workspaceName != null);
-    return await Firestore.instance
-        .collection('workspaces')
-        .document()
-        .setData({
-      'users': [currentUser.id],
+    final DocumentReference newWorkspace =
+        await Firestore.instance.collection('workspaces').add({
       'name': workspaceName,
       'description': workspaceDescription,
+      'users': [currentUser.id]
     });
+
+    await addWorkspaceToUser(
+        currentUser: currentUser, workspaceId: newWorkspace.documentID);
   }
 
   // Toggle task isCompleted status
