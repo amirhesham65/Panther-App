@@ -59,9 +59,11 @@ class _AddTaskState extends State<AddTask> {
 
   // Show the user assignment
   Future<void> _openUserAssignment() async {
+    print('workspace: ' + taskWorkspaceId);
     // Building each task list item
     Widget _buildUserItem(BuildContext context, DocumentSnapshot snapshot, Function closeDialog) {
       Map user = snapshot.data;
+      print(user['id']);
       return ListTile(
         onTap: () {
           setAssignedUser(user);

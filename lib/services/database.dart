@@ -81,6 +81,7 @@ class DatabaseService {
 
   // Getting the users in the workspace
   Stream<QuerySnapshot> getWorkspaceUsers(String workspaceId) {
+    assert(workspaceId != null);
     return Firestore.instance
         .collection('users')
         .where('workspaces', arrayContains: workspaceId)
