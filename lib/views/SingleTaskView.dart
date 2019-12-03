@@ -13,6 +13,45 @@ class SingleTaskView extends StatefulWidget {
 }
 
 class _SingleTaskViewState extends State<SingleTaskView> {
+  // Show delete task alert dialog
+  Future<void> _openDeleteTaskDialogAlert(String taskId) async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Do you want to delete this task?'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text('You can\'t undo this action. Are you sure you want to delete this task?'),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            FlatButton(
+              child: Text('Cancel', style: TextStyle(color: Colors.grey),),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            FlatButton(
+              child: Text('Delete', style: TextStyle(color: Colors.redAccent),),
+              onPressed: () async{
+                Navigator.pop(context);
+                Navigator.pop(context);
+                // Deleted a task
+                Future.delayed(Duration(milliseconds: 500), () {
+                  databaseService.deleteTask(taskId);
+                });
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
@@ -22,6 +61,7 @@ class _SingleTaskViewState extends State<SingleTaskView> {
           return Text('Lodaing');
         }
         var task = snapshot.data;
+        print(task);
         return Scaffold(
           appBar: AppBar(
             actions: <Widget>[
@@ -29,116 +69,137 @@ class _SingleTaskViewState extends State<SingleTaskView> {
                 onPressed: () {},
                 icon: Icon(Icons.playlist_add),
               ),
-              IconButton(
-                onPressed: () {},
+              PopupMenuButton(
                 icon: Icon(Icons.more_vert),
+                itemBuilder: (context) => [
+                  PopupMenuItem(
+                    child: FlatButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                        _openDeleteTaskDialogAlert(widget.task.reference.documentID);
+                      },
+                      child: Row(
+                      children: <Widget>[
+                        Icon(
+                          Icons.delete,
+                          color: Colors.redAccent,
+                        ),
+                        SizedBox(width: 8.0),
+                        Text(
+                          'Delete task',
+                          style: TextStyle(color: Colors.redAccent),
+                        )
+                      ],
+                    ),
+                    )
+                  ),
+                ],
               )
             ],
           ),
           body: SingleChildScrollView(
-                child: Hero(
-                  tag: 'task_' + widget.task.reference.documentID,
-                  child: Card(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 15.0, vertical: 10.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+            child: Hero(
+              tag: 'task_' + widget.task.reference.documentID,
+              child: Card(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 15.0, vertical: 10.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      SizedBox(height: 10.0),
+                      Text(
+                        task['workspaceName'],
+                        style: TextStyle(
+                          color:
+                              Theme.of(context).primaryTextTheme.caption.color,
+                        ),
+                      ),
+                      SizedBox(height: 10.0),
+                      Text(
+                        task['title'],
+                        style: TextStyle(
+                            fontSize: 20.0,
+                            fontWeight: FontWeight.w600,
+                            letterSpacing: 0.3),
+                      ),
+                      (task['description'] != null)
+                          ? Padding(
+                              padding:
+                                  const EdgeInsets.fromLTRB(0.0, 8.0, 0.0, 0.0),
+                              child: Text(
+                                task['description'],
+                                style: TextStyle(
+                                  fontSize: 13.0,
+                                  color: Theme.of(context)
+                                      .primaryTextTheme
+                                      .caption
+                                      .color,
+                                ),
+                              ),
+                            )
+                          : Container(),
+                      Row(
                         children: <Widget>[
-                          SizedBox(height: 10.0),
-                          Text(
-                            task['workspaceName'],
-                            style: TextStyle(
-                              color: Theme.of(context)
-                                  .primaryTextTheme
-                                  .caption
-                                  .color,
+                          Icon(Icons.flag, color: Colors.grey),
+                          Expanded(
+                            child: LinearPercentIndicator(
+                              percent: 0.25,
+                              progressColor: Theme.of(context).accentColor,
+                              backgroundColor: Colors.grey,
                             ),
                           ),
-                          SizedBox(height: 10.0),
-                          Text(
-                            task['title'],
-                            style: TextStyle(
-                                fontSize: 20.0,
-                                fontWeight: FontWeight.w600,
-                                letterSpacing: 0.3),
-                          ),
-                          (task['description'] != null)
-                              ? Padding(
-                                  padding: const EdgeInsets.fromLTRB(
-                                      0.0, 8.0, 0.0, 0.0),
-                                  child: Text(
-                                    task['description'],
-                                    style: TextStyle(
-                                      fontSize: 13.0,
-                                      color: Theme.of(context)
-                                          .primaryTextTheme
-                                          .caption
-                                          .color,
-                                    ),
-                                  ),
-                                )
-                              : Container(),
-                          Row(
-                            children: <Widget>[
-                              Icon(Icons.flag, color: Colors.grey),
-                              Expanded(
-                                child: LinearPercentIndicator(
-                                  percent: 0.25,
-                                  progressColor: Theme.of(context).accentColor,
-                                  backgroundColor: Colors.grey,
-                                ),
-                              ),
-                              IconButton(
-                                onPressed: () => databaseService.completeTask(
-                                    widget.task.reference.documentID,
-                                    task['isCompleted']),
-                                icon: (task['isCompleted'])
-                                    ? Icon(Icons.check_circle)
-                                    : Icon(Icons.check_circle_outline),
-                                color: (task['isCompleted'])
-                                    ? Theme.of(context).accentColor
-                                    : Colors.grey,
-                              ),
-                            ],
-                          ),
-                          StreamBuilder(
-                            stream: databaseService.streamUser(task['userAssignedId']),
-                            builder: (context, snapshot) {
-                              if (!snapshot.hasData) return Text('Loading');
-                              var taskUser = snapshot.data;
-                              return Container(
-                                child: Column(
-                                  children: <Widget>[
-                                    ListTile(
-                                      contentPadding: EdgeInsets.all(0.0),
-                                      leading: CircleAvatar(
-                                        backgroundColor: Theme.of(context)
-                                            .accentColor
-                                            .withOpacity(0.6),
-                                        child: (taskUser['photoUrl'] != null)
-                                            ? ClipOval(
-                                                child: Image.network(
-                                                  taskUser['photoUrl'],
-                                                  width: 35.0,
-                                                ),
-                                              )
-                                            : Text(task['displayName'][0]),
-                                      ),
-                                      title: Text('Assigned to'),
-                                      subtitle: Text(taskUser['displayName']),
-                                    )
-                                  ],
-                                ),
-                              );
-                            },
+                          IconButton(
+                            onPressed: () => databaseService.completeTask(
+                                widget.task.reference.documentID,
+                                task['isCompleted']),
+                            icon: (task['isCompleted'])
+                                ? Icon(Icons.check_circle)
+                                : Icon(Icons.check_circle_outline),
+                            color: (task['isCompleted'])
+                                ? Theme.of(context).accentColor
+                                : Colors.grey,
                           ),
                         ],
                       ),
-                    ),
+                      StreamBuilder(
+                        stream:
+                            databaseService.streamUser(task['userAssignedId']),
+                        builder: (context, snapshot) {
+                          if (!snapshot.hasData) return Text('Loading');
+                          var taskUser = snapshot.data;
+                          return Container(
+                            child: Column(
+                              children: <Widget>[
+                                ListTile(
+                                  contentPadding: EdgeInsets.all(0.0),
+                                  leading: CircleAvatar(
+                                    backgroundColor: Theme.of(context)
+                                        .accentColor
+                                        .withOpacity(0.6),
+                                    child: (taskUser['photoUrl'] != null)
+                                        ? ClipOval(
+                                            child: Image.network(
+                                              taskUser['photoUrl'],
+                                              width: 35.0,
+                                            ),
+                                          )
+                                        : Text(task['displayName'][0]),
+                                  ),
+                                  title: Text('Assigned to'),
+                                  subtitle: Text(taskUser['displayName']),
+                                )
+                              ],
+                            ),
+                          );
+                        },
+                      ),
+                    ],
                   ),
                 ),
               ),
+            ),
+          ),
         );
       },
     );
