@@ -94,13 +94,7 @@ class _HomeViewState extends State<HomeView> {
   // Building each task list item
   Widget _buildTaskItem(BuildContext context, DocumentSnapshot snapshot) {
     final task = Task.fromSnapshot(snapshot);
-    return HomeTaskCard(
-      taskId: task.reference.documentID,
-      taskWorkspaceName: task.workspaceName,
-      taskTitle: task.title,
-      taskDescription: task.description,
-      taskIsCompleted: task.isCompleted,
-    );
+    return HomeTaskCard(task: task);
   }
 
   @override
@@ -127,7 +121,10 @@ class _HomeViewState extends State<HomeView> {
               backgroundColor: Theme.of(context).accentColor.withOpacity(0.6),
               child: (user.photoUrl != null)
                   ? ClipOval(
-                      child: Image.network(user.photoUrl, width: 35.0,),
+                      child: Image.network(
+                        user.photoUrl,
+                        width: 35.0,
+                      ),
                     )
                   : Text(user.displayName[0]),
             ),
