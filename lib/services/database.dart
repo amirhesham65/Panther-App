@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:panther_app/models/user.dart';
-import 'package:panther_app/models/workspace.dart';
 
 class DatabaseService {
   // Adding a user to the DB directly
@@ -17,11 +16,16 @@ class DatabaseService {
     return currentUser;
   }
 
-  // Getting a certain user by its Id
+  // Getting a certain user by his Id
   dynamic getUserById(String userId) async {
     DocumentSnapshot userSnapshot =
         await Firestore.instance.collection('users').document(userId).get();
     return userSnapshot.data;
+  }
+
+  // Stream user data by his id
+  Stream<DocumentSnapshot> streamUser(String userId) {
+    return Firestore.instance.collection('users').document(userId).snapshots();
   }
 
   // Creating the user [MAIN]
@@ -69,6 +73,20 @@ class DatabaseService {
         .collection('workspaces')
         .where('users', arrayContains: currentUser.id)
         .snapshots();
+  }
+
+  // Streaming workspace tasks
+  Stream<QuerySnapshot> getWorkspaceTasks(String workspaceId) {
+    return Firestore.instance
+          .collection('tasks')
+          .where('workspaceId', isEqualTo: workspaceId)
+          .snapshots();
+  }
+
+  // Getting a task by its Id
+  Stream<DocumentSnapshot> getTaskById(String taskId) {
+    assert(taskId != null);
+    return Firestore.instance.collection('tasks').document(taskId).snapshots();
   }
 
   // Streaming the user's tasks
@@ -127,9 +145,11 @@ class DatabaseService {
       'description': workspaceDescription,
       'users': [currentUser.id]
     });
-
+    // Adding workspace id to the user
     await addWorkspaceToUser(
-        currentUser: currentUser, workspaceId: newWorkspace.documentID);
+      currentUser: currentUser,
+      workspaceId: newWorkspace.documentID,
+    );
   }
 
   // Toggle task isCompleted status
@@ -139,6 +159,8 @@ class DatabaseService {
         .document(taskId)
         .updateData({'isCompleted': !isCompleted});
   }
+
+  //
 }
 
 DatabaseService databaseService = DatabaseService();

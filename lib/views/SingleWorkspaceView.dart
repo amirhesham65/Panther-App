@@ -2,11 +2,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:panther_app/components/SegmentsOfControl.dart';
-import 'package:panther_app/components/WorkspaceTaskCard.dart';
+import 'package:panther_app/components/TaskCard.dart';
 import 'package:panther_app/models/task.dart';
 import 'package:panther_app/models/workspace.dart';
+import 'package:panther_app/services/database.dart';
 import 'package:panther_app/views/AddTask.dart';
-
 
 // Showing Add Task View
 void showAddTaskView(BuildContext context, String curentWorkspaceId) {
@@ -30,7 +30,7 @@ class _SingleWorkspaceViewState extends State<SingleWorkspaceView> {
   Widget _buildListBody(BuildContext context) {
     final Workspace workspace = ModalRoute.of(context).settings.arguments;
     return StreamBuilder<QuerySnapshot>(
-      stream: Firestore.instance.collection('tasks').where('workspaceId', isEqualTo: workspace.reference.documentID).snapshots(),
+      stream: databaseService.getWorkspaceTasks(workspace.reference.documentID),
       // The stream gets the data and the builder process that data
       builder: (context, snapshots) {
         // Check if the snapshot has data
@@ -56,22 +56,17 @@ class _SingleWorkspaceViewState extends State<SingleWorkspaceView> {
   // Building each task list item
   Widget _buildTaskItem(BuildContext context, DocumentSnapshot snapshot) {
     final task = Task.fromSnapshot(snapshot);
-    return WorkspaceTaskCard(
-      taskStatus: 'Overdue',
-      taskId: task.reference.documentID,
-      taskWorkspaceName: task.workspaceName,
-      taskTitle: task.title,
-      taskDescription: task.description,
-      taskIsCompleted: task.isCompleted,
-    );
+    return TaskCard(task: task);
   }
+
   @override
   Widget build(BuildContext context) {
     // Recieving the workspace from route arguments
     final Workspace workspace = ModalRoute.of(context).settings.arguments;
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        onPressed: () => showAddTaskView(context, workspace.reference.documentID),
+        onPressed: () =>
+            showAddTaskView(context, workspace.reference.documentID),
         child: Icon(
           Icons.add,
           color: Colors.white,
@@ -107,9 +102,7 @@ class _SingleWorkspaceViewState extends State<SingleWorkspaceView> {
               SizedBox(
                 height: 12.0,
               ),
-              Expanded(
-                child: _buildListBody(context)
-              )
+              Expanded(child: _buildListBody(context))
             ],
           ),
         ),

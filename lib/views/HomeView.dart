@@ -2,11 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
-import 'package:panther_app/components/HomeTaskCard.dart';
+import 'package:panther_app/components/TaskCard.dart';
 import 'package:panther_app/components/drawer.dart';
 import 'package:panther_app/models/task.dart';
 import 'package:panther_app/models/user.dart';
-import 'package:panther_app/services/app_state.dart';
 import 'package:panther_app/services/database.dart';
 import 'package:panther_app/views/AddTask.dart';
 import 'package:provider/provider.dart';
@@ -94,7 +93,7 @@ class _HomeViewState extends State<HomeView> {
   // Building each task list item
   Widget _buildTaskItem(BuildContext context, DocumentSnapshot snapshot) {
     final task = Task.fromSnapshot(snapshot);
-    return HomeTaskCard(task: task);
+    return TaskCard(task: task);
   }
 
   @override

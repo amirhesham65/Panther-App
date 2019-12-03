@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:panther_app/models/task.dart';
 import 'package:panther_app/services/database.dart';
@@ -17,10 +16,7 @@ class _SingleTaskViewState extends State<SingleTaskView> {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
-      stream: Firestore.instance
-          .collection('tasks')
-          .document(widget.task.reference.documentID)
-          .snapshots(),
+      stream: databaseService.getTaskById(widget.task.reference.documentID),
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
           return Text('Lodaing');
@@ -107,10 +103,7 @@ class _SingleTaskViewState extends State<SingleTaskView> {
                             ],
                           ),
                           StreamBuilder(
-                            stream: Firestore.instance
-                                .collection('users')
-                                .document(task['userAssignedId'])
-                                .snapshots(),
+                            stream: databaseService.streamUser(task['userAssignedId']),
                             builder: (context, snapshot) {
                               if (!snapshot.hasData) return Text('Loading');
                               var taskUser = snapshot.data;

@@ -4,19 +4,19 @@ import 'package:panther_app/services/database.dart';
 import 'package:panther_app/views/SingleTaskView.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 
-class HomeTaskCard extends StatefulWidget {
+class TaskCard extends StatefulWidget {
   // Accepting task data
   final Task task;
 
-  HomeTaskCard({
+  TaskCard({
     this.task
   });
 
   @override
-  _HomeTaskCardState createState() => _HomeTaskCardState();
+  _TaskCardState createState() => _TaskCardState();
 }
 
-class _HomeTaskCardState extends State<HomeTaskCard> {
+class _TaskCardState extends State<TaskCard> {
   @override
   Widget build(BuildContext context) {
     return Container(
