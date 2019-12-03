@@ -49,6 +49,13 @@ class _AddTaskState extends State<AddTask> {
     taskWorkspaceId = widget.currentWorkspaceId;
   }
 
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    taskAssignedUserId = Provider.of<User>(context).id;
+    taskAssignedUserName = Provider.of<User>(context).displayName;
+  }
+
   // Setting the assigned user Id to the state
   void setAssignedUser(user) {
     setState(() {
@@ -59,11 +66,10 @@ class _AddTaskState extends State<AddTask> {
 
   // Show the user assignment
   Future<void> _openUserAssignment() async {
-    print('workspace: ' + taskWorkspaceId);
     // Building each task list item
-    Widget _buildUserItem(BuildContext context, DocumentSnapshot snapshot, Function closeDialog) {
+    Widget _buildUserItem(
+        BuildContext context, DocumentSnapshot snapshot, Function closeDialog) {
       Map user = snapshot.data;
-      print(user['id']);
       return ListTile(
         onTap: () {
           setAssignedUser(user);
@@ -86,8 +92,8 @@ class _AddTaskState extends State<AddTask> {
     }
 
     // Building the actual task list
-    Widget _buildUserList(
-        BuildContext context, List<DocumentSnapshot> snapshots, Function closeDialog) {
+    Widget _buildUserList(BuildContext context,
+        List<DocumentSnapshot> snapshots, Function closeDialog) {
       return ListBody(
         // Iterating over the snapshots
         children: snapshots
@@ -102,7 +108,8 @@ class _AddTaskState extends State<AddTask> {
       builder: (BuildContext context) {
         void closeDialog() => Navigator.pop(context);
         return AlertDialog(
-          contentPadding: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 10.0),
+          contentPadding:
+              const EdgeInsets.symmetric(horizontal: 5.0, vertical: 10.0),
           title: Text('Choose a person'),
           content: SingleChildScrollView(
               child: StreamBuilder<QuerySnapshot>(
@@ -111,7 +118,8 @@ class _AddTaskState extends State<AddTask> {
               // Check if the snapshot has data
               if (!snapshots.hasData) return LinearProgressIndicator();
               // Build the actual task list
-              return _buildUserList(context, snapshots.data.documents, closeDialog);
+              return _buildUserList(
+                  context, snapshots.data.documents, closeDialog);
             },
           )),
           actions: <Widget>[
@@ -131,7 +139,7 @@ class _AddTaskState extends State<AddTask> {
   Widget build(BuildContext context) {
     // Getting the current user from the provider
     final User currentUser = Provider.of<User>(context);
-    
+
     // Build the workspace choosing dropdown menu widget
     Widget _buildDropDown(
         BuildContext context, List<DocumentSnapshot> snapshots) {
@@ -146,7 +154,6 @@ class _AddTaskState extends State<AddTask> {
           setState(() {
             taskWorkspaceId = val;
           });
-          print(taskWorkspaceId);
         },
         items: workspaces.map((Workspace workspace) {
           return DropdownMenuItem<String>(
