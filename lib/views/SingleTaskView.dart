@@ -1,6 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:panther_app/models/task.dart';
 import 'package:panther_app/services/database.dart';
+import 'package:panther_app/views/EditTask.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 
 class SingleTaskView extends StatefulWidget {
@@ -10,6 +13,17 @@ class SingleTaskView extends StatefulWidget {
 
   @override
   _SingleTaskViewState createState() => _SingleTaskViewState();
+}
+
+// Showing Add Task View
+void showEditTaskView(BuildContext context, DocumentSnapshot task) {
+  Navigator.push(
+    context,
+    PageTransition(
+      type: PageTransitionType.downToUp,
+      child: EditTask(task: task),
+    ),
+  );
 }
 
 class _SingleTaskViewState extends State<SingleTaskView> {
@@ -24,20 +38,27 @@ class _SingleTaskViewState extends State<SingleTaskView> {
           content: SingleChildScrollView(
             child: ListBody(
               children: <Widget>[
-                Text('You can\'t undo this action. Are you sure you want to delete this task?'),
+                Text(
+                    'You can\'t undo this action. Are you sure you want to delete this task?'),
               ],
             ),
           ),
           actions: <Widget>[
             FlatButton(
-              child: Text('Cancel', style: TextStyle(color: Colors.grey),),
+              child: Text(
+                'Cancel',
+                style: TextStyle(color: Colors.grey),
+              ),
               onPressed: () {
                 Navigator.of(context).pop();
               },
             ),
             FlatButton(
-              child: Text('Delete', style: TextStyle(color: Colors.redAccent),),
-              onPressed: () async{
+              child: Text(
+                'Delete',
+                style: TextStyle(color: Colors.redAccent),
+              ),
+              onPressed: () async {
                 Navigator.pop(context);
                 Navigator.pop(context);
                 // Deleted a task
@@ -60,8 +81,7 @@ class _SingleTaskViewState extends State<SingleTaskView> {
         if (!snapshot.hasData) {
           return Text('Lodaing');
         }
-        var task = snapshot.data;
-        print(task);
+        DocumentSnapshot task = snapshot.data;
         return Scaffold(
           appBar: AppBar(
             actions: <Widget>[
@@ -69,32 +89,16 @@ class _SingleTaskViewState extends State<SingleTaskView> {
                 onPressed: () {},
                 icon: Icon(Icons.playlist_add),
               ),
-              PopupMenuButton(
-                icon: Icon(Icons.more_vert),
-                itemBuilder: (context) => [
-                  PopupMenuItem(
-                    child: FlatButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                        _openDeleteTaskDialogAlert(widget.task.reference.documentID);
-                      },
-                      child: Row(
-                      children: <Widget>[
-                        Icon(
-                          Icons.delete,
-                          color: Colors.redAccent,
-                        ),
-                        SizedBox(width: 8.0),
-                        Text(
-                          'Delete task',
-                          style: TextStyle(color: Colors.redAccent),
-                        )
-                      ],
-                    ),
-                    )
-                  ),
-                ],
-              )
+              IconButton(
+                onPressed: () =>
+                    showEditTaskView(context, task),
+                icon: Icon(Icons.edit),
+              ),
+              IconButton(
+                onPressed: () => _openDeleteTaskDialogAlert(
+                    widget.task.reference.documentID),
+                icon: Icon(Icons.delete),
+              ),
             ],
           ),
           body: SingleChildScrollView(
@@ -184,7 +188,7 @@ class _SingleTaskViewState extends State<SingleTaskView> {
                                               width: 35.0,
                                             ),
                                           )
-                                        : Text(task['displayName'][0]),
+                                        : Text(taskUser['displayName'][0]),
                                   ),
                                   title: Text('Assigned to'),
                                   subtitle: Text(taskUser['displayName']),

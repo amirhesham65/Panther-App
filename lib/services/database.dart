@@ -68,6 +68,34 @@ class DatabaseService {
     });
   }
 
+  // Toggle task isCompleted status
+  Future<void> completeTask(String taskId, bool isCompleted) async {
+    await Firestore.instance.runTransaction((transaction) async {
+      DocumentSnapshot snapshot = await transaction
+          .get(Firestore.instance.collection('tasks').document(taskId));
+      await transaction
+          .update(snapshot.reference, {'isCompleted': !isCompleted});
+    });
+  }
+
+  // Editing a task
+  Future<void> editTask({String taskId, String taskTitle, String taskDescription,
+      String workspaceId, DateTime schedule, String assignedUserId}) async {
+    await Firestore.instance.runTransaction((transaction) async {
+      DocumentSnapshot snapshot = await transaction
+          .get(Firestore.instance.collection('tasks').document(taskId));
+      await transaction.update(snapshot.reference, {
+        'workspaceId': workspaceId,
+        'workspaceName': (await getWorkspaceById(workspaceId))['name'],
+        'title': taskTitle,
+        'description': taskDescription,
+        'isCompleted': false,
+        'schedule': schedule,
+        'userAssignedId': assignedUserId
+      });
+    });
+  }
+
   // Deleteing a task
   Future<void> deleteTask(String taskId) async {
     await Firestore.instance.collection('tasks').document(taskId).delete();
@@ -84,9 +112,9 @@ class DatabaseService {
   // Streaming workspace tasks
   Stream<QuerySnapshot> getWorkspaceTasks(String workspaceId) {
     return Firestore.instance
-          .collection('tasks')
-          .where('workspaceId', isEqualTo: workspaceId)
-          .snapshots();
+        .collection('tasks')
+        .where('workspaceId', isEqualTo: workspaceId)
+        .snapshots();
   }
 
   // Getting a task by its Id
@@ -157,16 +185,6 @@ class DatabaseService {
       workspaceId: newWorkspace.documentID,
     );
   }
-
-  // Toggle task isCompleted status
-  Future<void> completeTask(String taskId, bool isCompleted) async {
-    await Firestore.instance
-        .collection('tasks')
-        .document(taskId)
-        .updateData({'isCompleted': !isCompleted});
-  }
-
-  //
 }
 
 DatabaseService databaseService = DatabaseService();
