@@ -70,29 +70,28 @@ class DatabaseService {
 
   // Toggle task isCompleted status
   Future<void> completeTask(String taskId, bool isCompleted) async {
-    await Firestore.instance.runTransaction((transaction) async {
-      DocumentSnapshot snapshot = await transaction
-          .get(Firestore.instance.collection('tasks').document(taskId));
-      await transaction
-          .update(snapshot.reference, {'isCompleted': !isCompleted});
-    });
+    await Firestore.instance
+        .collection('tasks')
+        .document(taskId)
+        .updateData({'isCompleted': !isCompleted});
   }
 
   // Editing a task
-  Future<void> editTask({String taskId, String taskTitle, String taskDescription,
-      String workspaceId, DateTime schedule, String assignedUserId}) async {
-    await Firestore.instance.runTransaction((transaction) async {
-      DocumentSnapshot snapshot = await transaction
-          .get(Firestore.instance.collection('tasks').document(taskId));
-      await transaction.update(snapshot.reference, {
-        'workspaceId': workspaceId,
-        'workspaceName': (await getWorkspaceById(workspaceId))['name'],
-        'title': taskTitle,
-        'description': taskDescription,
-        'isCompleted': false,
-        'schedule': schedule,
-        'userAssignedId': assignedUserId
-      });
+  Future<void> editTask(
+      {String taskId,
+      String taskTitle,
+      String taskDescription,
+      String workspaceId,
+      DateTime schedule,
+      String assignedUserId}) async {
+    await Firestore.instance.collection('tasks').document(taskId).updateData({
+      'workspaceId': workspaceId,
+      'workspaceName': (await getWorkspaceById(workspaceId))['name'],
+      'title': taskTitle,
+      'description': taskDescription,
+      'isCompleted': false,
+      'schedule': schedule,
+      'userAssignedId': assignedUserId
     });
   }
 

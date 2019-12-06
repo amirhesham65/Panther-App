@@ -184,15 +184,14 @@ class _EditTaskState extends State<EditTask> {
         actions: <Widget>[
           FlatButton(
             onPressed: () {
-              databaseService
-                  .editTask(
-                      taskId: widget.task.reference.documentID,
-                      taskTitle: taskTitle,
-                      taskDescription: taskDescription,
-                      workspaceId: taskWorkspaceId,
-                      schedule: schedule,
-                      assignedUserId: taskAssignedUserId)
-                  .then((val) => Navigator.pop(context));
+              databaseService.editTask(
+                  taskId: widget.task.reference.documentID,
+                  taskTitle: taskTitle,
+                  taskDescription: taskDescription,
+                  workspaceId: taskWorkspaceId,
+                  schedule: schedule,
+                  assignedUserId: taskAssignedUserId);
+              Navigator.pop(context);
             },
             child: Text(
               'Done',

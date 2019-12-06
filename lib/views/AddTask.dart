@@ -190,15 +190,14 @@ class _AddTaskState extends State<AddTask> {
         actions: <Widget>[
           FlatButton(
             onPressed: () {
-              databaseService
-                  .createTask(
-                      user: Provider.of<User>(context),
-                      taskTitle: taskTitle,
-                      taskDescription: taskDescription,
-                      workspaceId: taskWorkspaceId,
-                      schedule: schedule,
-                      assignedUserId: taskAssignedUserId)
-                  .then((val) => Navigator.pop(context));
+              databaseService.createTask(
+                  user: Provider.of<User>(context),
+                  taskTitle: taskTitle,
+                  taskDescription: taskDescription,
+                  workspaceId: taskWorkspaceId,
+                  schedule: schedule,
+                  assignedUserId: taskAssignedUserId);
+              Navigator.pop(context);
             },
             child: Text(
               'Done',
