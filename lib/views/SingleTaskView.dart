@@ -114,9 +114,8 @@ class _SingleTaskViewState extends State<SingleTaskView> {
                           child: Text(
                             'Add',
                             style: TextStyle(
-                              color:Theme.of(context).accentColor,
-                              fontWeight: FontWeight.bold
-                            ),
+                                color: Theme.of(context).accentColor,
+                                fontWeight: FontWeight.bold),
                           ),
                         )
                       ],
@@ -148,10 +147,10 @@ class _SingleTaskViewState extends State<SingleTaskView> {
 
   void addNewSubTask(String subTaskText) {
     subTasks.add({'title': subTaskText, 'isCompleted': false});
-     Firestore.instance
-          .collection('tasks')
-          .document(widget.task.reference.documentID)
-          .updateData({'subtasks': subTasks});
+    Firestore.instance
+        .collection('tasks')
+        .document(widget.task.reference.documentID)
+        .updateData({'subtasks': subTasks});
   }
 
   void onReorder(int oldIndex, int newIndex) {
@@ -329,16 +328,43 @@ class _SingleTaskViewState extends State<SingleTaskView> {
                         onReorder: onReorder,
                         children: gotSubtasks
                             .map(
-                              (subtask) => ListTile(
-                                contentPadding: const EdgeInsets.symmetric(
-                                    horizontal: 10.0),
+                              (subtask) => Dismissible(
                                 key: ValueKey(subtask),
-                                title: Text(subtask['title']),
-                                leading: IconButton(
-                                  onPressed: () {},
-                                  icon: Icon(Icons.check_circle_outline),
+                                onDismissed: (direction) {
+                                  Firestore.instance
+                                      .collection('tasks')
+                                      .document(
+                                          widget.task.reference.documentID)
+                                      .updateData({
+                                    'subtasks':
+                                        FieldValue.arrayRemove([subtask])
+                                  });
+                                  Firestore.instance
+                                      .collection('tasks')
+                                      .document(
+                                          widget.task.reference.documentID)
+                                      .get()
+                                      .then((snapshot) {
+                                    if (snapshot.data['subtasks'] != null) {
+                                      setState(() {
+                                        subTasks =
+                                            snapshot.data['subtasks'].toList();
+                                      });
+                                    }
+                                  });
+                                },
+                                background: Container(color: Colors.redAccent),
+                                child: ListTile(
+                                  contentPadding: const EdgeInsets.symmetric(
+                                      horizontal: 10.0),
+                                  key: ValueKey(subtask),
+                                  title: Text(subtask['title']),
+                                  leading: IconButton(
+                                    onPressed: () {},
+                                    icon: Icon(Icons.check_circle_outline),
+                                  ),
+                                  trailing: Icon(Icons.reorder),
                                 ),
-                                trailing: Icon(Icons.reorder),
                               ),
                             )
                             .toList(),
