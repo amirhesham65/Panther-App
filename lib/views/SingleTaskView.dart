@@ -115,6 +115,7 @@ class _SingleTaskViewState extends State<SingleTaskView> {
           return Text('Lodaing');
         }
         DocumentSnapshot task = snapshot.data;
+        List gotSubtasks = task['subtasks'];
         return Scaffold(
           appBar: AppBar(
             actions: <Widget>[
@@ -259,11 +260,11 @@ class _SingleTaskViewState extends State<SingleTaskView> {
                   ),
                 ),
               ),
-              Expanded(
+              
+              (gotSubtasks.length > 0) ? Expanded(
                 child: ReorderableListView(
                   onReorder: onReorder,
-                  children: subTasks
-                      .map(
+                  children: gotSubtasks.map(
                         (subtask) => ListTile(
                           contentPadding:
                               const EdgeInsets.symmetric(horizontal: 10.0),
@@ -278,7 +279,7 @@ class _SingleTaskViewState extends State<SingleTaskView> {
                       )
                       .toList(),
                 ),
-              ),
+              ) : Container(),
             ],
           ),
         );
