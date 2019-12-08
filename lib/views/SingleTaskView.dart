@@ -73,6 +73,60 @@ class _SingleTaskViewState extends State<SingleTaskView> {
     );
   }
 
+  String subtaskText = "";
+
+  void _modalBottomSheetMenu() {
+    showModalBottomSheet(
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(top: Radius.circular(10.0))),
+        context: context,
+        builder: (context) => Padding(
+              padding: const EdgeInsets.fromLTRB(18.0, 8.0, 18.0, 0.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Container(
+                    child: TextField(
+                      decoration: InputDecoration(hintText: 'Sub-task text'),
+                      onChanged: (value) {
+                        setState(() {
+                          subtaskText = value;
+                        });
+                      },
+                      onSubmitted: (value) {
+                        addNewSubTask(subtaskText);
+                        Navigator.pop(context);
+                      },
+                      autofocus: true,
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(
+                        bottom: MediaQuery.of(context).viewInsets.bottom),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: <Widget>[
+                        FlatButton(
+                          onPressed: () {
+                            addNewSubTask(subtaskText);
+                            Navigator.pop(context);
+                          },
+                          child: Text(
+                            'Add',
+                            style: TextStyle(
+                              color:Theme.of(context).accentColor,
+                              fontWeight: FontWeight.bold
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ));
+  }
+
   List subTasks = [];
 
   @override
@@ -90,6 +144,14 @@ class _SingleTaskViewState extends State<SingleTaskView> {
         });
       }
     });
+  }
+
+  void addNewSubTask(String subTaskText) {
+    subTasks.add({'title': subTaskText, 'isCompleted': false});
+     Firestore.instance
+          .collection('tasks')
+          .document(widget.task.reference.documentID)
+          .updateData({'subtasks': subTasks});
   }
 
   void onReorder(int oldIndex, int newIndex) {
@@ -117,10 +179,11 @@ class _SingleTaskViewState extends State<SingleTaskView> {
         DocumentSnapshot task = snapshot.data;
         List gotSubtasks = task['subtasks'];
         return Scaffold(
+          resizeToAvoidBottomPadding: true,
           appBar: AppBar(
             actions: <Widget>[
               IconButton(
-                onPressed: () {},
+                onPressed: _modalBottomSheetMenu,
                 icon: Icon(Icons.playlist_add),
               ),
               IconButton(
@@ -260,26 +323,28 @@ class _SingleTaskViewState extends State<SingleTaskView> {
                   ),
                 ),
               ),
-              
-              (gotSubtasks.length > 0) ? Expanded(
-                child: ReorderableListView(
-                  onReorder: onReorder,
-                  children: gotSubtasks.map(
-                        (subtask) => ListTile(
-                          contentPadding:
-                              const EdgeInsets.symmetric(horizontal: 10.0),
-                          key: ValueKey(subtask),
-                          title: Text(subtask['title']),
-                          leading: IconButton(
-                            onPressed: () {},
-                            icon: Icon(Icons.check_circle_outline),
-                          ),
-                          trailing: Icon(Icons.reorder),
-                        ),
-                      )
-                      .toList(),
-                ),
-              ) : Container(),
+              (gotSubtasks.length > 0)
+                  ? Expanded(
+                      child: ReorderableListView(
+                        onReorder: onReorder,
+                        children: gotSubtasks
+                            .map(
+                              (subtask) => ListTile(
+                                contentPadding: const EdgeInsets.symmetric(
+                                    horizontal: 10.0),
+                                key: ValueKey(subtask),
+                                title: Text(subtask['title']),
+                                leading: IconButton(
+                                  onPressed: () {},
+                                  icon: Icon(Icons.check_circle_outline),
+                                ),
+                                trailing: Icon(Icons.reorder),
+                              ),
+                            )
+                            .toList(),
+                      ),
+                    )
+                  : Container(),
             ],
           ),
         );
