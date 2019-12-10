@@ -64,7 +64,8 @@ class DatabaseService {
       'description': taskDescription,
       'isCompleted': false,
       'schedule': schedule,
-      'userAssignedId': assignedUserId
+      'userAssignedId': assignedUserId,
+      'subtasks': []
     });
   }
 

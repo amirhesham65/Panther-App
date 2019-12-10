@@ -75,6 +75,7 @@ class _SingleTaskViewState extends State<SingleTaskView> {
 
   String subtaskText = "";
 
+  // Sub-task addding bottom-sheet
   void _modalBottomSheetMenu() {
     showModalBottomSheet(
       shape: RoundedRectangleBorder(
@@ -107,7 +108,7 @@ class _SingleTaskViewState extends State<SingleTaskView> {
                       });
                     },
                     onSubmitted: (value) {
-                      addNewSubTask(subtaskText);
+                      addNewSubTask(subtaskText, false);
                       Navigator.pop(context);
                     },
                   ),
@@ -116,7 +117,7 @@ class _SingleTaskViewState extends State<SingleTaskView> {
                     children: <Widget>[
                       FlatButton(
                         onPressed: () {
-                          addNewSubTask(subtaskText);
+                          addNewSubTask(subtaskText, false);
                           Navigator.pop(context);
                         },
                         child: Text(
@@ -140,6 +141,59 @@ class _SingleTaskViewState extends State<SingleTaskView> {
 
   List subTasks = [];
 
+  void updateSubTasks() {
+    // Updating out subTasks List
+    Firestore.instance
+        .collection('tasks')
+        .document(widget.task.reference.documentID)
+        .get()
+        .then((snapshot) {
+      if (snapshot.data['subtasks'] != null) {
+        setState(() {
+          subTasks = snapshot.data['subtasks'].toList();
+        });
+      }
+    });
+  }
+
+  void addNewSubTask(String subTaskText, bool isCompleted) {
+    subTasks.add({'title': subTaskText, 'isCompleted': isCompleted, 'time': new DateTime.now().toUtc()});
+    Firestore.instance
+        .collection('tasks')
+        .document(widget.task.reference.documentID)
+        .updateData({'subtasks': subTasks});
+  }
+
+  void removeSubTask(Map subtask) {
+    Firestore.instance
+        .collection('tasks')
+        .document(widget.task.reference.documentID)
+        .updateData({
+      'subtasks': FieldValue.arrayRemove([subtask])
+    });
+    updateSubTasks();
+  }
+
+  void completeSubTask(Map subtask) {
+    String title = subtask['title'];
+    addNewSubTask(title, !subtask['isCompleted']);
+    removeSubTask(subtask);
+  }
+
+  void onReorder(int oldIndex, int newIndex) {
+    setState(() {
+      if (newIndex > oldIndex) {
+        newIndex -= 1;
+      }
+      Map movedSubTask = subTasks.removeAt(oldIndex);
+      subTasks.insert(newIndex, movedSubTask);
+      Firestore.instance
+          .collection('tasks')
+          .document(widget.task.reference.documentID)
+          .updateData({'subtasks': subTasks});
+    });
+  }
+
   @override
   void initState() {
     super.initState();
@@ -154,28 +208,6 @@ class _SingleTaskViewState extends State<SingleTaskView> {
           subTasks = snapshot.data['subtasks'].toList();
         });
       }
-    });
-  }
-
-  void addNewSubTask(String subTaskText) {
-    subTasks.add({'title': subTaskText, 'isCompleted': false});
-    Firestore.instance
-        .collection('tasks')
-        .document(widget.task.reference.documentID)
-        .updateData({'subtasks': subTasks});
-  }
-
-  void onReorder(int oldIndex, int newIndex) {
-    setState(() {
-      if (newIndex > oldIndex) {
-        newIndex -= 1;
-      }
-      Map movedSubTask = subTasks.removeAt(oldIndex);
-      subTasks.insert(newIndex, movedSubTask);
-      Firestore.instance
-          .collection('tasks')
-          .document(widget.task.reference.documentID)
-          .updateData({'subtasks': subTasks});
     });
   }
 
@@ -342,29 +374,8 @@ class _SingleTaskViewState extends State<SingleTaskView> {
                             .map(
                               (subtask) => Dismissible(
                                 key: ValueKey(subtask),
-                                onDismissed: (direction) {
-                                  Firestore.instance
-                                      .collection('tasks')
-                                      .document(
-                                          widget.task.reference.documentID)
-                                      .updateData({
-                                    'subtasks':
-                                        FieldValue.arrayRemove([subtask])
-                                  });
-                                  Firestore.instance
-                                      .collection('tasks')
-                                      .document(
-                                          widget.task.reference.documentID)
-                                      .get()
-                                      .then((snapshot) {
-                                    if (snapshot.data['subtasks'] != null) {
-                                      setState(() {
-                                        subTasks =
-                                            snapshot.data['subtasks'].toList();
-                                      });
-                                    }
-                                  });
-                                },
+                                onDismissed: (direction) =>
+                                    removeSubTask(subtask),
                                 background: Container(color: Colors.redAccent),
                                 child: ListTile(
                                   contentPadding: const EdgeInsets.symmetric(
@@ -372,8 +383,14 @@ class _SingleTaskViewState extends State<SingleTaskView> {
                                   key: ValueKey(subtask),
                                   title: Text(subtask['title']),
                                   leading: IconButton(
-                                    onPressed: () {},
-                                    icon: Icon(Icons.check_circle_outline),
+                                    onPressed: () {
+                                      setState(() {
+                                        completeSubTask(subtask);
+                                      });
+                                    },
+                                    icon: (subtask['isCompleted'] == true)
+                                        ? Icon(Icons.check_circle)
+                                        : Icon(Icons.check_circle_outline),
                                   ),
                                   trailing: Icon(Icons.reorder),
                                 ),
