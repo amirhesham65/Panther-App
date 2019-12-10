@@ -77,53 +77,65 @@ class _SingleTaskViewState extends State<SingleTaskView> {
 
   void _modalBottomSheetMenu() {
     showModalBottomSheet(
-        shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.vertical(top: Radius.circular(10.0))),
-        context: context,
-        builder: (context) => Padding(
-              padding: const EdgeInsets.fromLTRB(18.0, 8.0, 18.0, 0.0),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(15.0),
+        ),
+      ),
+      context: context,
+      isScrollControlled: true,
+      builder: (context) => Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 18),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            SizedBox(
+              height: 8.0,
+            ),
+            Padding(
+              padding: EdgeInsets.only(
+                  bottom: MediaQuery.of(context).viewInsets.bottom),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Container(
-                    child: TextField(
-                      decoration: InputDecoration(hintText: 'Sub-task text'),
-                      onChanged: (value) {
-                        setState(() {
-                          subtaskText = value;
-                        });
-                      },
-                      onSubmitted: (value) {
-                        addNewSubTask(subtaskText);
-                        Navigator.pop(context);
-                      },
-                      autofocus: true,
-                    ),
+                  TextField(
+                    decoration: InputDecoration(hintText: 'Add a new Sub-task'),
+                    autofocus: true,
+                    onChanged: (value) {
+                      setState(() {
+                        subtaskText = value;
+                      });
+                    },
+                    onSubmitted: (value) {
+                      addNewSubTask(subtaskText);
+                      Navigator.pop(context);
+                    },
                   ),
-                  Padding(
-                    padding: EdgeInsets.only(
-                        bottom: MediaQuery.of(context).viewInsets.bottom),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: <Widget>[
-                        FlatButton(
-                          onPressed: () {
-                            addNewSubTask(subtaskText);
-                            Navigator.pop(context);
-                          },
-                          child: Text(
-                            'Add',
-                            style: TextStyle(
-                                color: Theme.of(context).accentColor,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        )
-                      ],
-                    ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: <Widget>[
+                      FlatButton(
+                        onPressed: () {
+                          addNewSubTask(subtaskText);
+                          Navigator.pop(context);
+                        },
+                        child: Text(
+                          'Add',
+                          style: TextStyle(
+                              color: Theme.of(context).accentColor,
+                              fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),
-            ));
+            ),
+            SizedBox(height: 10),
+          ],
+        ),
+      ),
+    );
   }
 
   List subTasks = [];
