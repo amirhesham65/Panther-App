@@ -8,6 +8,7 @@ class Task {
   bool isCompleted;
   DateTime schedule;
   String assignedUserId;
+  List subtasks;
 
   // The document reference will be set to snapshot reference
   DocumentReference reference;
@@ -20,7 +21,8 @@ class Task {
         workspaceName = map['workspaceName'],
         description = map['description'],
         isCompleted = map['isCompleted'],
-        assignedUserId = map['assignedUserId'];
+        assignedUserId = map['assignedUserId'],
+        subtasks = map['subtasks'];
 
   // Formatting the snapshot data
   Task.fromSnapshot(DocumentSnapshot snapshot) : this.fromMap(snapshot.data, reference: snapshot.reference);

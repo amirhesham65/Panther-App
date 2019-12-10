@@ -141,9 +141,9 @@ class _SingleTaskViewState extends State<SingleTaskView> {
 
   List subTasks = [];
 
-  void updateSubTasks() {
+  Future<void> updateSubTasks() async {
     // Updating out subTasks List
-    Firestore.instance
+    await Firestore.instance
         .collection('tasks')
         .document(widget.task.reference.documentID)
         .get()
@@ -164,20 +164,21 @@ class _SingleTaskViewState extends State<SingleTaskView> {
         .updateData({'subtasks': subTasks});
   }
 
-  void removeSubTask(Map subtask) {
+  Future<void> removeSubTask(Map subtask) async{
     Firestore.instance
         .collection('tasks')
         .document(widget.task.reference.documentID)
         .updateData({
       'subtasks': FieldValue.arrayRemove([subtask])
     });
-    updateSubTasks();
+    await updateSubTasks();
   }
 
-  void completeSubTask(Map subtask) {
+  Future<void> completeSubTask(Map subtask) async {
+    await removeSubTask(subtask);
     String title = subtask['title'];
     addNewSubTask(title, !subtask['isCompleted']);
-    removeSubTask(subtask);
+    
   }
 
   void onReorder(int oldIndex, int newIndex) {
@@ -220,6 +221,7 @@ class _SingleTaskViewState extends State<SingleTaskView> {
           return Text('Lodaing');
         }
         DocumentSnapshot task = snapshot.data;
+        
         List gotSubtasks = task['subtasks'];
         return Scaffold(
           resizeToAvoidBottomPadding: true,
