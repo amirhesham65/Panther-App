@@ -108,7 +108,7 @@ class _SingleTaskViewState extends State<SingleTaskView> {
                       });
                     },
                     onSubmitted: (value) {
-                      addNewSubTask(subtaskText, false);
+                      addSubTask(subtaskText, false);
                       Navigator.pop(context);
                     },
                   ),
@@ -117,7 +117,7 @@ class _SingleTaskViewState extends State<SingleTaskView> {
                     children: <Widget>[
                       FlatButton(
                         onPressed: () {
-                          addNewSubTask(subtaskText, false);
+                          addSubTask(subtaskText, false);
                           Navigator.pop(context);
                         },
                         child: Text(
@@ -141,75 +141,86 @@ class _SingleTaskViewState extends State<SingleTaskView> {
 
   List subTasks = [];
 
-  Future<void> updateSubTasks() async {
-    // Updating out subTasks List
-    await Firestore.instance
+
+  // Below are the operations on subtasks are added here because the intract 
+  // directly With the Flutter framework (I needed to use setState() function, etc)
+
+  // Getting the subtasks of the task
+  Future<void> getSubTasks() async {
+    DocumentSnapshot taskSnapshot = await Firestore.instance
         .collection('tasks')
         .document(widget.task.reference.documentID)
-        .get()
-        .then((snapshot) {
-      if (snapshot.data['subtasks'] != null) {
-        setState(() {
-          subTasks = snapshot.data['subtasks'].toList();
-        });
-      }
-    });
+        .get();
+    if (taskSnapshot.data['subtasks'] != null) {
+      setState(() {
+        subTasks = taskSnapshot.data['subtasks'].toList();
+      });
+    }
   }
 
-  void addNewSubTask(String subTaskText, bool isCompleted) {
-    subTasks.add({'title': subTaskText, 'isCompleted': isCompleted, 'time': new DateTime.now().toUtc()});
-    Firestore.instance
+  // Setting the subtasks of the task
+  Future<void> setSubTasks() async {
+    await Firestore.instance
         .collection('tasks')
         .document(widget.task.reference.documentID)
         .updateData({'subtasks': subTasks});
   }
 
-  Future<void> removeSubTask(Map subtask) async{
-    Firestore.instance
-        .collection('tasks')
-        .document(widget.task.reference.documentID)
-        .updateData({
-      'subtasks': FieldValue.arrayRemove([subtask])
+  // Adding a new subtask
+  Future<void> addSubTask(String title, bool isCompleted) async {
+    subTasks.add({
+      'title': title,
+      'isCompleted': isCompleted,
+      'timeCreated': new DateTime.now()
     });
-    await updateSubTasks();
+    await setSubTasks();
   }
 
-  Future<void> completeSubTask(Map subtask) async {
-    await removeSubTask(subtask);
-    String title = subtask['title'];
-    addNewSubTask(title, !subtask['isCompleted']);
-    
+  // Deleting a subtask
+  Future<void> deleteSubTask(subtask) async {
+    await getSubTasks();
+    List newSubTasks = subTasks
+        .where((sub) => sub['timeCreated'] != subtask['timeCreated'])
+        .toList();
+    setState(() {
+      subTasks = newSubTasks;
+    });
+    await setSubTasks();
   }
 
-  void onReorder(int oldIndex, int newIndex) {
+  Future<void> completeSubTask(subtask) async {
+    await getSubTasks();
+    List newSubTasks = subTasks
+        .where((sub) => sub['timeCreated'] != subtask['timeCreated'])
+        .toList();
+    setState(() {
+      subTasks = newSubTasks;
+    });
+    subTasks.add({
+      'title': subtask['title'],
+      'isCompleted': !subtask['isCompleted'],
+      'timeCreated': new DateTime.now()
+    });
+    await setSubTasks();
+  }
+
+  // Handling reorder
+  Future<void> onReorder(int oldIndex, int newIndex) async {
     setState(() {
       if (newIndex > oldIndex) {
         newIndex -= 1;
       }
-      Map movedSubTask = subTasks.removeAt(oldIndex);
+      var movedSubTask = subTasks.removeAt(oldIndex);
       subTasks.insert(newIndex, movedSubTask);
-      Firestore.instance
-          .collection('tasks')
-          .document(widget.task.reference.documentID)
-          .updateData({'subtasks': subTasks});
     });
+    await setSubTasks();
   }
 
   @override
   void initState() {
     super.initState();
-    // Getting the subtasks of the task
-    Firestore.instance
-        .collection('tasks')
-        .document(widget.task.reference.documentID)
-        .get()
-        .then((snapshot) {
-      if (snapshot.data['subtasks'] != null) {
-        setState(() {
-          subTasks = snapshot.data['subtasks'].toList();
-        });
-      }
-    });
+    // Getting the subtasks
+    getSubTasks();
   }
 
   @override
@@ -220,12 +231,13 @@ class _SingleTaskViewState extends State<SingleTaskView> {
         if (!snapshot.hasData) {
           return Text('Lodaing');
         }
+        // The task and its subtasks
         DocumentSnapshot task = snapshot.data;
-        
-        List gotSubtasks = task['subtasks'];
+        List fetchedSubTasks = task['subtasks'];
         return Scaffold(
           resizeToAvoidBottomPadding: true,
           appBar: AppBar(
+            backgroundColor: Theme.of(context).canvasColor,
             actions: <Widget>[
               IconButton(
                 onPressed: _modalBottomSheetMenu,
@@ -242,115 +254,124 @@ class _SingleTaskViewState extends State<SingleTaskView> {
                 icon: Icon(Icons.delete),
               ),
             ],
+            bottom: PreferredSize(
+              preferredSize: const Size.fromHeight(1.0),
+              child: LinearProgressIndicator(
+                value: 0.5,
+              ),
+            ),
           ),
           body: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Hero(
-                tag: 'task_' + widget.task.reference.documentID,
-                child: Card(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 15.0, vertical: 10.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        SizedBox(height: 10.0),
-                        Text(
-                          task['workspaceName'],
-                          style: TextStyle(
-                            color: Theme.of(context)
-                                .primaryTextTheme
-                                .caption
-                                .color,
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Hero(
+                  tag: 'task_' + widget.task.reference.documentID,
+                  child: Card(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 15.0, vertical: 10.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          SizedBox(height: 10.0),
+                          Text(
+                            task['workspaceName'],
+                            style: TextStyle(
+                              color: Theme.of(context)
+                                  .primaryTextTheme
+                                  .caption
+                                  .color,
+                            ),
                           ),
-                        ),
-                        SizedBox(height: 10.0),
-                        Text(
-                          task['title'],
-                          style: TextStyle(
-                              fontSize: 20.0,
-                              fontWeight: FontWeight.w600,
-                              letterSpacing: 0.3,
-                              decoration: (task['isCompleted'])
-                                  ? TextDecoration.lineThrough
-                                  : TextDecoration.none),
-                        ),
-                        (task['description'] != null)
-                            ? Padding(
-                                padding: const EdgeInsets.fromLTRB(
-                                    0.0, 8.0, 0.0, 0.0),
-                                child: Text(
-                                  task['description'],
-                                  style: TextStyle(
-                                    fontSize: 13.0,
-                                    color: Theme.of(context)
-                                        .primaryTextTheme
-                                        .caption
-                                        .color,
-                                    decoration: (task['isCompleted'])
-                                        ? TextDecoration.lineThrough
-                                        : TextDecoration.none,
-                                  ),
-                                ),
-                              )
-                            : Container(),
-                        Row(
-                          children: <Widget>[
-                            Icon(Icons.flag, color: Colors.grey),
-                            Expanded(
-                              child: LinearPercentIndicator(
-                                percent: 0.25,
-                                progressColor: Theme.of(context).accentColor,
-                                backgroundColor: Colors.grey,
-                              ),
-                            ),
-                            IconButton(
-                              onPressed: () => databaseService.completeTask(
-                                  widget.task.reference.documentID,
-                                  task['isCompleted']),
-                              icon: (task['isCompleted'])
-                                  ? Icon(Icons.check_circle)
-                                  : Icon(Icons.check_circle_outline),
-                              color: (task['isCompleted'])
-                                  ? Theme.of(context).accentColor
-                                  : Colors.grey,
-                            ),
-                          ],
-                        ),
-                        StreamBuilder(
-                          stream: databaseService
-                              .streamUser(task['userAssignedId']),
-                          builder: (context, snapshot) {
-                            if (!snapshot.hasData) return Text('Loading');
-                            var taskUser = snapshot.data;
-                            return Container(
-                              child: Column(
-                                children: <Widget>[
-                                  ListTile(
-                                    contentPadding: EdgeInsets.all(0.0),
-                                    leading: CircleAvatar(
-                                      backgroundColor: Theme.of(context)
-                                          .accentColor
-                                          .withOpacity(0.6),
-                                      child: (taskUser['photoUrl'] != null)
-                                          ? ClipOval(
-                                              child: Image.network(
-                                                taskUser['photoUrl'],
-                                                width: 35.0,
-                                              ),
-                                            )
-                                          : Text(taskUser['displayName'][0]),
+                          SizedBox(height: 10.0),
+                          Text(
+                            task['title'],
+                            style: TextStyle(
+                                fontSize: 20.0,
+                                fontWeight: FontWeight.w600,
+                                letterSpacing: 0.3,
+                                decoration: (task['isCompleted'])
+                                    ? TextDecoration.lineThrough
+                                    : TextDecoration.none),
+                          ),
+                          (task['description'] != null)
+                              ? Padding(
+                                  padding: const EdgeInsets.fromLTRB(
+                                      0.0, 8.0, 0.0, 0.0),
+                                  child: Text(
+                                    task['description'],
+                                    style: TextStyle(
+                                      fontSize: 13.0,
+                                      color: Theme.of(context)
+                                          .primaryTextTheme
+                                          .caption
+                                          .color,
+                                      decoration: (task['isCompleted'])
+                                          ? TextDecoration.lineThrough
+                                          : TextDecoration.none,
                                     ),
-                                    title: Text('Assigned to'),
-                                    subtitle: Text(taskUser['displayName']),
-                                  )
-                                ],
+                                  ),
+                                )
+                              : Container(),
+                          Row(
+                            children: <Widget>[
+                              Icon(Icons.flag, color: Colors.grey),
+                              Expanded(
+                                child: LinearPercentIndicator(
+                                  percent: 0.25,
+                                  progressColor: Theme.of(context).accentColor,
+                                  backgroundColor: Colors.grey,
+                                ),
                               ),
-                            );
-                          },
-                        ),
-                      ],
+                              IconButton(
+                                onPressed: () => databaseService.completeTask(
+                                    widget.task.reference.documentID,
+                                    task['isCompleted']),
+                                icon: (task['isCompleted'])
+                                    ? Icon(Icons.check_circle)
+                                    : Icon(Icons.check_circle_outline),
+                                color: (task['isCompleted'])
+                                    ? Theme.of(context).accentColor
+                                    : Colors.grey,
+                              ),
+                            ],
+                          ),
+                          StreamBuilder(
+                            stream: databaseService
+                                .streamUser(task['userAssignedId']),
+                            builder: (context, snapshot) {
+                              if (!snapshot.hasData) return Text('Loading');
+                              var taskUser = snapshot.data;
+                              return Container(
+                                child: Column(
+                                  children: <Widget>[
+                                    ListTile(
+                                      contentPadding: EdgeInsets.all(0.0),
+                                      leading: CircleAvatar(
+                                        backgroundColor: Theme.of(context)
+                                            .accentColor
+                                            .withOpacity(0.6),
+                                        child: (taskUser['photoUrl'] != null)
+                                            ? ClipOval(
+                                                child: Image.network(
+                                                  taskUser['photoUrl'],
+                                                  width: 35.0,
+                                                ),
+                                              )
+                                            : Text(taskUser['displayName'][0]),
+                                      ),
+                                      title: Text('Assigned to'),
+                                      subtitle: Text(taskUser['displayName']),
+                                    )
+                                  ],
+                                ),
+                              );
+                            },
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
@@ -368,16 +389,16 @@ class _SingleTaskViewState extends State<SingleTaskView> {
                   ),
                 ),
               ),
-              (gotSubtasks.length > 0)
+              (fetchedSubTasks.length > 0)
                   ? Expanded(
                       child: ReorderableListView(
                         onReorder: onReorder,
-                        children: gotSubtasks
+                        children: fetchedSubTasks
                             .map(
                               (subtask) => Dismissible(
                                 key: ValueKey(subtask),
-                                onDismissed: (direction) =>
-                                    removeSubTask(subtask),
+                                onDismissed: (direction) async =>
+                                    await deleteSubTask(subtask),
                                 background: Container(color: Colors.redAccent),
                                 child: ListTile(
                                   contentPadding: const EdgeInsets.symmetric(
@@ -385,11 +406,8 @@ class _SingleTaskViewState extends State<SingleTaskView> {
                                   key: ValueKey(subtask),
                                   title: Text(subtask['title']),
                                   leading: IconButton(
-                                    onPressed: () {
-                                      setState(() {
-                                        completeSubTask(subtask);
-                                      });
-                                    },
+                                    onPressed: () async =>
+                                        await completeSubTask(subtask),
                                     icon: (subtask['isCompleted'] == true)
                                         ? Icon(Icons.check_circle)
                                         : Icon(Icons.check_circle_outline),
