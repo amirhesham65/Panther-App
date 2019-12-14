@@ -141,7 +141,6 @@ class _SingleTaskViewState extends State<SingleTaskView> {
 
   List subTasks = [];
 
-
   // Below are the operations on subtasks are added here because the intract 
   // directly With the Flutter framework (I needed to use setState() function, etc)
 

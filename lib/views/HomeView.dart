@@ -111,8 +111,26 @@ class _HomeViewState extends State<HomeView> {
       ),
       appBar: AppBar(
         title: Text('Mismo'),
-        elevation: 0.7,
+        elevation: 3,
         backgroundColor: Theme.of(context).canvasColor,
+        bottom: PreferredSize(
+          child: Expanded(
+            child: Container(
+              padding: const EdgeInsets.all(5.0),
+              margin: const EdgeInsets.only(top: 10.0),
+              color: Theme.of(context).primaryColor.withAlpha(200),
+              child: SizedBox.expand(
+                child: Center(
+                  child: Text(
+                    'What will you accomplish today?',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
+              ),
+            ),
+          ),
+          preferredSize: Size.fromHeight(20.0),
+        ),
         actions: <Widget>[
           Padding(
             padding: const EdgeInsets.fromLTRB(0.0, 0.0, 12.0, 0.0),

@@ -4,7 +4,6 @@ import 'package:panther_app/services/app_state.dart';
 import 'package:panther_app/services/auth.dart';
 import 'package:panther_app/views/HomeView.dart';
 import 'package:panther_app/views/LoadingView.dart';
-import 'package:panther_app/views/PersonalView.dart';
 import 'package:panther_app/views/SingleTaskView.dart';
 import 'package:panther_app/views/SingleWorkspaceView.dart';
 import 'package:panther_app/views/WelcomeView.dart';
@@ -38,7 +37,6 @@ class MyApp extends StatelessWidget {
           '/': (context) => LoadingView(),
           '/welcome': (context) => WelcomeView(),
           '/home': (context) => HomeView(),
-          '/personal': (context) => PersonalView(),
           '/workspaces': (context) => WorkspacesView(),
           '/workspace': (context) => SingleWorkspaceView(),
           '/task': (context) => SingleTaskView()
