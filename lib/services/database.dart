@@ -75,6 +75,15 @@ class DatabaseService {
         .collection('tasks')
         .document(taskId)
         .updateData({'isCompleted': !isCompleted});
+
+    // Complete all subtasks
+    List subtasks = (await Firestore.instance.collection('tasks').document(taskId).get()).data['subtasks'];
+    subtasks.forEach((subtask) => subtask['isCompleted'] = !isCompleted);
+
+    await Firestore.instance
+        .collection('tasks')
+        .document(taskId)
+        .updateData({'subtasks': subtasks});
   }
 
   // Editing a task

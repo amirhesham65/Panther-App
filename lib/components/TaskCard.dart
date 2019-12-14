@@ -19,6 +19,8 @@ class TaskCard extends StatefulWidget {
 class _TaskCardState extends State<TaskCard> {
   @override
   Widget build(BuildContext context) {
+    List fetchedSubTasks = widget.task.subtasks;
+    double completedSubtasksRatio = (fetchedSubTasks.where((sub) => sub['isCompleted'] == true).toList().length) / fetchedSubTasks.length;
     return Container(
       width: 300.0,
       child: Container(
@@ -75,7 +77,7 @@ class _TaskCardState extends State<TaskCard> {
                           Icon(Icons.flag, color: Colors.grey),
                           Expanded(
                             child: LinearPercentIndicator(
-                              percent: 0.25,
+                              percent: completedSubtasksRatio,
                               progressColor: Theme.of(context).accentColor,
                               backgroundColor: Colors.grey,
                             ),

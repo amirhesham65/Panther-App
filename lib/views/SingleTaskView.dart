@@ -233,6 +233,9 @@ class _SingleTaskViewState extends State<SingleTaskView> {
         // The task and its subtasks
         DocumentSnapshot task = snapshot.data;
         List fetchedSubTasks = task['subtasks'];
+
+        double completedSubtasksRatio = (fetchedSubTasks.where((sub) => sub['isCompleted'] == true).toList().length) / fetchedSubTasks.length;
+        
         return Scaffold(
           resizeToAvoidBottomPadding: true,
           appBar: AppBar(
@@ -256,7 +259,7 @@ class _SingleTaskViewState extends State<SingleTaskView> {
             bottom: PreferredSize(
               preferredSize: const Size.fromHeight(1.0),
               child: LinearProgressIndicator(
-                value: 0.5,
+                value: completedSubtasksRatio,
               ),
             ),
           ),
@@ -319,7 +322,7 @@ class _SingleTaskViewState extends State<SingleTaskView> {
                               Icon(Icons.flag, color: Colors.grey),
                               Expanded(
                                 child: LinearPercentIndicator(
-                                  percent: 0.25,
+                                  percent: completedSubtasksRatio,
                                   progressColor: Theme.of(context).accentColor,
                                   backgroundColor: Colors.grey,
                                 ),
