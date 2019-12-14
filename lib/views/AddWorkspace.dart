@@ -1,7 +1,5 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:panther_app/models/user.dart';
-import 'package:panther_app/services/app_state.dart';
 import 'package:panther_app/services/database.dart';
 import 'package:provider/provider.dart';
 

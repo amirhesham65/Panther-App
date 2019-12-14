@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:panther_app/models/user.dart';
 import 'package:panther_app/views/HomeView.dart';
 import 'package:panther_app/views/WelcomeView.dart';
