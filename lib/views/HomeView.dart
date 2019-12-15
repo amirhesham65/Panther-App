@@ -110,7 +110,7 @@ class _HomeViewState extends State<HomeView> {
         ),
       ),
       appBar: AppBar(
-        title: Text('Mismo'),
+        title: Text('Panther App'),
         elevation: 3,
         backgroundColor: Theme.of(context).canvasColor,
         bottom: PreferredSize(

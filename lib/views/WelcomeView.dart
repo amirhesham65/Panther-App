@@ -21,7 +21,7 @@ class _WelcomeViewState extends State<WelcomeView> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Text(
-                'Welcome to Mismo',
+                'Welcome to Panther App',
                 style: TextStyle(fontSize: 14.0, color: Colors.grey),
               ),
               Text(
